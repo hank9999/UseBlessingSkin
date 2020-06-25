@@ -1,0 +1,15 @@
+name: UseBlessingSkin
+version: ${project.version}
+main: com.github.hank9999.useblessingskin.bukkit.UseBlessingSkin
+depend: [SkinsRestorer]
+authors: [hank9999]
+description: 让SkinsRestorer使用Blessing Skin Server搭建的皮肤站上的皮肤!
+
+permissions:
+  UseBlessingSkin.admin:
+    description: UseBlessingSkin Admin Perm
+    default: op
+
+commands:
+  bskin:
+    description: UseBlessingSkin Main Command

@@ -1,0 +1,28 @@
+# 配置含义 https://github.com/hank9999/UseBlessingSkin#配置文件
+
+csl: 'https://example.com/csl/%name%.json'
+texture: 'https://example.com/textures/%textureId%'
+name: 'XXX皮肤站'
+url: 'https://example.com/'
+mineskinapi: 'https://api.mineskin.org/generate/upload'
+cdn: false
+
+message:
+  Support: '目前支持以下皮肤站'
+  SetSkin: '设置皮肤'
+  AboutIdInfo: '<ID>为您在皮肤站的角色名称'
+  RequestError: '请求错误'
+  RoleNotExist: '角色不存在，请检查后重试'
+  RoleResponseEmpty: '皮肤站响应为空'
+  RoleSkinNotExist: '角色无皮肤'
+  IfCdnMakeRoleSkinNotExist: '如为刚设置, 请等待缓存刷新'
+  TextureIdGetSuccess: '材质ID获取成功'
+  SaveTextureError: '保存材质时出现异常, 请重试'
+  SaveTextureSuccess: '保存材质成功'
+  UploadingTexture: '正在上传材质至MineSkin, 速度较慢请耐心等待'
+  UploadTextureError: '上传材质至MineSkin时出现异常, 请重试'
+  UploadTextureSuccess: '上传材质至MineSkin成功'
+  SetSkinSuccess: '材质设置成功, 如不显示请重进游戏'
+  UnknownError: '出现了未知错误, 请重试'
+  DoNotHavePermission: '您没有权限执行此指令'
+  ReloadSuccess: '插件重载成功'
