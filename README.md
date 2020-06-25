@@ -4,7 +4,7 @@
 支持 BungeeCord 和 Bukkit
 
 ## 使用方法
- 1. 下载最新的 Releases 版本 (Actions里有开发版)
+ 1. 下载最新的 Releases 版本 (Actions 里有开发版)
  2. 扔进 Plugins 文件夹
  3. 使用 plugman 加载或重启服务器
 
@@ -22,14 +22,14 @@
  - csl
    - 获取角色信息链接
    - 格式: https://example.com/csl/%name%.json
-   - example.com换成您自己的域名
+   - example.com 换成皮肤站的域名
    - 若更改了 csl 默认地址 请进行替换
    - **注意: %name%.json 必须保留**
    
  - texture
    - 获取材质链接
    - 格式: https://example.com/textures/%textureId%
-   - example.com 换成您自己的域名
+   - example.com 换成皮肤站的域名
    - 若更改了材质默认地址 请进行替换
    - **注意: %textureId% 必须保留**
   
@@ -49,8 +49,8 @@
  
  - message
    - 插件文本
-   - Support: 输出帮助时显示 支持的皮肤站
-   - SetSkin: 输出帮助时显示设置皮肤
+   - Support: 输出帮助时显示 用于引出支持的皮肤站
+   - SetSkin: 输出帮助时显示 表示设置皮肤
    - AboutIdInfo: 输出帮助时显示 关于帮助中 \<ID\> 的解释
    - RequestError: 请求错误
    - RoleNotExist: 角色不存在，请检查后重试
