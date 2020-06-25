@@ -72,17 +72,16 @@ final public class httpMethods {
         File file = new File(picPath);
 
         // 构建Body Header
-        StringBuilder PostBody = new StringBuilder();
-        PostBody.append("--");
-        PostBody.append(BOUNDARY);
-        PostBody.append("\r\n");
-        PostBody.append("Content-Disposition: form-data; name=\"file\"; filename=\"").append(picName).append("\"").append("\r\n");
-        PostBody.append("Content-Type: image/png");
-        PostBody.append("\r\n");
-        PostBody.append("\r\n");
+        String PostBody = "--" +
+                BOUNDARY +
+                "\r\n" +
+                "Content-Disposition: form-data; name=\"file\"; filename=\"" + picName + "\"" + "\r\n" +
+                "Content-Type: image/png" +
+                "\r\n" +
+                "\r\n";
 
         // 将Body Header写入输出流
-        out.write(PostBody.toString().getBytes());
+        out.write(PostBody.getBytes());
 
         // 读取文件数据
         DataInputStream in = new DataInputStream(new FileInputStream(
@@ -90,7 +89,7 @@ final public class httpMethods {
 
         // 每次读1KB
         byte[] bufferOut = new byte[1024];
-        int bytes = 0;
+        int bytes;
 
         // 写入输出流
         while ((bytes = in.read(bufferOut)) != -1) {
@@ -112,7 +111,7 @@ final public class httpMethods {
         // 定义BufferedReader输入流来读取URL的响应
         BufferedReader reader = new BufferedReader(new InputStreamReader(
                 conn.getInputStream()));
-        String line = null;
+        String line;
         StringBuilder response = new StringBuilder();
         while ((line = reader.readLine()) != null) {
             response.append(line);
