@@ -4,6 +4,7 @@ import com.github.hank9999.useblessingskin.bungee.Libs.getConfig;
 import com.github.hank9999.useblessingskin.bungee.UseBlessingSkin;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
@@ -36,7 +37,12 @@ public class BungeeCommand extends Command {
             commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + "/bskin set <ID> " + getConfig.str("message.SetSkin")));
             commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + getConfig.str("message.AboutIdInfo")));
             commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_AQUA + getConfig.str("message.Support")));
-            commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_AQUA + getConfig.str("name") + " " + getConfig.str("url")));
+
+            TextComponent skinWebSiteLink = new TextComponent(ChatColor.DARK_AQUA + getConfig.str("name") + " " + getConfig.str("url"));
+            skinWebSiteLink.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, getConfig.str("url")));
+
+            commandSender.sendMessage(skinWebSiteLink);
+
             if (commandSender.hasPermission("UseBlessingSkin.admin")) {
                 commandSender.sendMessage(new TextComponent(""));
                 commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + "/bskin reload  Reload Config"));
@@ -59,7 +65,12 @@ public class BungeeCommand extends Command {
                 commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + "/bskin set <ID> " + getConfig.str("message.SetSkin")));
                 commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + getConfig.str("message.AboutIdInfo")));
                 commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_AQUA + getConfig.str("message.Support")));
-                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_AQUA + getConfig.str("name") + " " + getConfig.str("url")));
+
+                TextComponent skinWebSiteLink = new TextComponent(ChatColor.DARK_AQUA + getConfig.str("name") + " " + getConfig.str("url"));
+                skinWebSiteLink.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, getConfig.str("url")));
+
+                commandSender.sendMessage(skinWebSiteLink);
+
             } else {
                 UseBlessingSkin.instance.getProxy().getScheduler().runAsync(UseBlessingSkin.instance,
                         (() -> {
