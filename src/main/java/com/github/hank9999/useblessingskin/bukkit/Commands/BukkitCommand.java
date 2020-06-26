@@ -36,8 +36,8 @@ final public class BukkitCommand implements TabExecutor {
             if (strings[0].equalsIgnoreCase("help")) {
                 commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + "/bskin set <ID> " + getConfig.str("message.SetSkin"));
                 commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + getConfig.str("message.AboutIdInfo"));
-                commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_PURPLE + getConfig.str("message.Support"));
-                commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_PURPLE + getConfig.str("name") + " " + getConfig.str("url"));
+                commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_AQUA + getConfig.str("message.Support"));
+                commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_AQUA + getConfig.str("name") + " " + getConfig.str("url"));
                 if (commandSender.hasPermission("UseBlessingSkin.admin")) {
                     commandSender.sendMessage("");
                     commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + "/bskin reload  Reload Config");
@@ -57,8 +57,8 @@ final public class BukkitCommand implements TabExecutor {
                 if (strings.length == 1) {
                     commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + "/bskin set <ID> " + getConfig.str("message.SetSkin"));
                     commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + getConfig.str("message.AboutIdInfo"));
-                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_PURPLE + getConfig.str("message.Support"));
-                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_PURPLE + getConfig.str("name") + " " + getConfig.str("url"));
+                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_AQUA + getConfig.str("message.Support"));
+                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_AQUA + getConfig.str("name") + " " + getConfig.str("url"));
                     return true;
                 } else {
                     (new BukkitRunnable() {
