@@ -41,10 +41,10 @@ final public class Updater {
                     if (is_first) {
                         this.plugin.getLogger().info(ChatColor.AQUA + "No new update available.");
                         is_first = false;
-                    } else {
-                        this.plugin.getLogger().info(ChatColor.AQUA + "A new update " + Response + " available!");
-                        this.plugin.getLogger().info(ChatColor.AQUA + "See it in https://github.com/hank9999/UseBlessingSkin/releases");
                     }
+                } else {
+                    this.plugin.getLogger().info(ChatColor.AQUA + "A new update " + Response + " available!");
+                    this.plugin.getLogger().info(ChatColor.AQUA + "See it in https://github.com/hank9999/UseBlessingSkin/releases");
                 }
             } catch (Exception e) {
                 this.plugin.getLogger().info(ChatColor.AQUA + "Cannot look for updates: " + e.getMessage());
