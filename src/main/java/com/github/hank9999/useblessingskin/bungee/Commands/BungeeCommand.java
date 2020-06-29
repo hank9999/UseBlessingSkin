@@ -8,16 +8,19 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
+import net.md_5.bungee.api.plugin.TabExecutor;
 import skinsrestorer.bungee.SkinsRestorer;
 import skinsrestorer.shared.storage.SkinStorage;
 
 import java.net.URLEncoder;
-import java.util.UUID;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.github.hank9999.useblessingskin.shared.utils.*;
 
 
-public class BungeeCommand extends Command {
+public class BungeeCommand extends Command implements TabExecutor {
 
     private final String basePath = UseBlessingSkin.instance.getDataFolder().toString();
 
@@ -150,4 +153,16 @@ public class BungeeCommand extends Command {
             }
         }
     }
+
+
+    private final String[] Commands = {"help", "set", "reload"};
+
+    @Override
+    public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
+        if (args.length > 1) {
+            return Collections.emptyList();
+        }
+        return Arrays.stream(Commands).filter(s -> s.startsWith(args[0])).collect(Collectors.toList());
+    }
+
 }

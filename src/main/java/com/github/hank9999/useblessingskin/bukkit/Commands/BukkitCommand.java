@@ -145,8 +145,9 @@ final public class BukkitCommand implements TabExecutor {
 
 
     final public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        if (args.length == 0) return Arrays.asList(Commands);
-        if (args.length > 1) return new ArrayList<>();
+        if (args.length > 1) {
+            return Collections.emptyList();
+        }
         return Arrays.stream(Commands).filter(s -> s.startsWith(args[0])).collect(Collectors.toList());
     }
 }
