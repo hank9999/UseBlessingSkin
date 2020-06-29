@@ -26,3 +26,4 @@ message:
   UnknownError: '出现了未知错误, 请重试'
   DoNotHavePermission: '您没有权限执行此指令'
   ReloadSuccess: '插件重载成功'
+  NoCommand: '该指令不存在'

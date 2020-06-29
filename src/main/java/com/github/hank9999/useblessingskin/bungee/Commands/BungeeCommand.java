@@ -62,6 +62,7 @@ public class BungeeCommand extends Command implements TabExecutor {
             } else {
                 commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + "Can't Load Config"));
             }
+            return;
         }
         if (strings[0].equalsIgnoreCase("set")) {
             if (strings.length == 1) {
@@ -73,6 +74,8 @@ public class BungeeCommand extends Command implements TabExecutor {
                 skinWebSiteLink.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, getConfig.str("url")));
 
                 commandSender.sendMessage(skinWebSiteLink);
+
+                return;
 
             } else {
                 UseBlessingSkin.instance.getProxy().getScheduler().runAsync(UseBlessingSkin.instance,
@@ -150,8 +153,10 @@ public class BungeeCommand extends Command implements TabExecutor {
                                 e.printStackTrace();
                             }
                         }));
+                return;
             }
         }
+        commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.NoCommand")));
     }
 
 

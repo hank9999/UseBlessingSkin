@@ -51,6 +51,7 @@ final public class BukkitCommand implements TabExecutor {
                 }
                 UseBlessingSkin.plugin.reloadConfig();
                 commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.ReloadSuccess"));
+                return true;
             }
 
             if (strings[0].equalsIgnoreCase("set")) {
@@ -138,7 +139,9 @@ final public class BukkitCommand implements TabExecutor {
                         }
                     }).runTaskAsynchronously(UseBlessingSkin.plugin);
                 }
+                return true;
             }
+            commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.NoCommand"));
         }
         return true;
     }
