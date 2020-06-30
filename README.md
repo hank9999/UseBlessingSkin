@@ -47,6 +47,9 @@
    - 皮肤站是否启用 CDN
    - 用于控制 IfCdnMakeRoleSkinNotExist 输出
  
+ - cache
+   - 材质是否缓存
+ 
  - message
    - 插件文本
    - Support: 输出帮助时显示 用于引出支持的皮肤站

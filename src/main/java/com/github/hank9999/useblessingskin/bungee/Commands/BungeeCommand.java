@@ -105,18 +105,36 @@ public class BungeeCommand extends Command implements TabExecutor {
 
                                 commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.TextureIdGetSuccess") + " " + textureId));
 
-                                String picName = UUID.randomUUID().toString() + ".png";
+                                String picName;
 
-                                if (!savePic(
-                                        getConfig.str("texture").replaceAll("%textureId%", textureId),
-                                        basePath + "\\Cache\\",
-                                        picName)
-                                ) {
-                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.SaveTextureError")));
-                                    return;
+                                if (getConfig.bool("cache")) {
+                                    picName = textureId + ".png";
+                                    if (!checkCache(basePath + "\\Cache\\" + picName)) {
+                                        if (!savePic(
+                                                getConfig.str("texture").replaceAll("%textureId%", textureId),
+                                                basePath + "\\Cache\\",
+                                                picName)
+                                        ) {
+                                            commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.SaveTextureError")));
+                                            return;
+                                        }
+
+                                        commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.SaveTextureSuccess")));
+                                    }
+                                } else {
+                                    picName = UUID.randomUUID().toString() + ".png";
+                                    if (!savePic(
+                                            getConfig.str("texture").replaceAll("%textureId%", textureId),
+                                            basePath + "\\Cache\\",
+                                            picName)
+                                    ) {
+                                        commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.SaveTextureError")));
+                                        return;
+                                    }
+
+                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.SaveTextureSuccess")));
                                 }
 
-                                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.SaveTextureSuccess")));
                                 commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_PURPLE + getConfig.str("message.UploadingTexture")));
 
                                 String[] MineSkinApi = MineSkinApi(

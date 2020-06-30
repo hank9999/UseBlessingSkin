@@ -1,5 +1,10 @@
 package com.github.hank9999.useblessingskin.shared;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
 import static com.github.hank9999.useblessingskin.shared.Response.*;
 import static com.github.hank9999.useblessingskin.shared.httpMethods.*;
 
@@ -47,5 +52,32 @@ final public class utils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static Boolean checkCache(String picPath) {
+        File file = new File(picPath);
+        if (!file.exists()) {
+            return false;
+        }
+
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (img == null) {
+            return false;
+        }
+
+        int skinWidth = img.getWidth();
+        int skinHeight = img.getHeight();
+
+        if (!((skinWidth == 64 && skinHeight == 64) || (skinWidth == 64 && skinHeight == 32))) {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -6,6 +6,7 @@ name: 'XXX皮肤站'
 url: 'https://example.com/'
 mineskinapi: 'https://api.mineskin.org/generate/upload'
 cdn: false
+cache: false
 
 message:
   Support: '目前支持以下皮肤站'
