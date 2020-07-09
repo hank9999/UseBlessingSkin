@@ -160,7 +160,7 @@ public class BungeeCommand extends Command implements TabExecutor {
                                 SkinsRestorer skinsRestorer = SkinsRestorer.getInstance();
                                 SkinStorage skinStorage = skinsRestorer.getSkinStorage();
 
-                                skinStorage.setSkinData(" " + commandSender.getName(), skinStorage.createProperty("textures", value, signature));
+                                skinStorage.setSkinData(" " + commandSender.getName(), skinStorage.createProperty("textures", value, signature), "9223243187835955807");
                                 skinStorage.setPlayerSkin(commandSender.getName(), " " + commandSender.getName());
                                 skinsRestorer.getSkinsRestorerBungeeAPI().applySkin((ProxiedPlayer) commandSender);
 

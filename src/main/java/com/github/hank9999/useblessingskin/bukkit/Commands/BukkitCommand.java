@@ -145,7 +145,7 @@ final public class BukkitCommand implements TabExecutor {
                                 SkinsRestorer skinsRestorer = JavaPlugin.getPlugin(SkinsRestorer.class);
                                 SkinStorage skinStorage = skinsRestorer.getSkinStorage();
 
-                                skinStorage.setSkinData(" " + commandSender.getName(), skinStorage.createProperty("textures", value, signature));
+                                skinStorage.setSkinData(" " + commandSender.getName(), skinStorage.createProperty("textures", value, signature), "9223243187835955807");
                                 skinStorage.setPlayerSkin(commandSender.getName(), " " + commandSender.getName());
                                 skinsRestorer.getSkinsRestorerBukkitAPI().applySkin((Player) commandSender);
 
