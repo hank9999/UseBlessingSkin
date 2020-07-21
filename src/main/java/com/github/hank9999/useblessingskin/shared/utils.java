@@ -9,19 +9,21 @@ import static com.github.hank9999.useblessingskin.shared.Response.*;
 import static com.github.hank9999.useblessingskin.shared.httpMethods.*;
 
 final public class utils {
-    public static String getTextureId(String url) {
+    public static String[] getTextureId(String url) {
         try {
             String profile = getUrl(url);
             if (profile == null) {
-                return "Role does not exist";
+                return new String[] {"false", "Role does not exist"};
             } else if (profile.isEmpty()) {
-                return "Role response is empty";
+                return new String[] {"false", "Role response is empty"};
             }
-            String textureId = TextureIdParser(profile);
+            String[] TextureIdParseData = TextureIdParser(profile);
+            String isSlim = TextureIdParseData[0];
+            String textureId = TextureIdParseData[1];
             if (textureId == null) {
-                return "Role does not have skin";
+                return new String[] {"Role does not have skin"};
             }
-            return textureId;
+            return new String[] {isSlim, textureId};
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -37,8 +39,11 @@ final public class utils {
         }
     }
 
-    public static String[] MineSkinApi(String urlHttp, String picName, String picPath) {
+    public static String[] MineSkinApi(String urlHttp, String picName, String picPath, String isSlim) {
         try {
+            if (isSlim.equalsIgnoreCase("true")) {
+                urlHttp += "?model=slim";
+            }
             String apiResponse = postPic(urlHttp, picName, picPath);
             String[] textureData = MineSkinApiParser(apiResponse);
             if (textureData.length == 0) {

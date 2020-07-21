@@ -66,9 +66,20 @@ final public class BukkitCommand implements TabExecutor {
                         public void run() {
                             try {
 
-                                String textureId = getTextureId(
+                                String[] textureIdData = getTextureId(
                                         getConfig.str("csl").replaceAll("%name%", URLEncoder.encode(strings[1], "UTF-8"))
                                 );
+
+                                String isSlim;
+                                String textureId;
+
+                                if (textureIdData == null) {
+                                    isSlim = "false";
+                                    textureId = null;
+                                } else {
+                                    isSlim = textureIdData[0];
+                                    textureId = textureIdData[1];
+                                }
 
                                 if (textureId == null) {
                                     commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.RequestError"));
@@ -125,7 +136,8 @@ final public class BukkitCommand implements TabExecutor {
                                 String[] MineSkinApi = MineSkinApi(
                                         getConfig.str("mineskinapi"),
                                         picName,
-                                        basePath + "\\Cache\\" + picName
+                                        basePath + "\\Cache\\" + picName,
+                                        isSlim
                                 );
 
                                 if (MineSkinApi == null) {

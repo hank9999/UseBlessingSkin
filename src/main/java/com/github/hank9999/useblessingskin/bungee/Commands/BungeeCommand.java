@@ -82,9 +82,20 @@ public class BungeeCommand extends Command implements TabExecutor {
                         (() -> {
                             try {
 
-                                String textureId = getTextureId(
+                                String[] textureIdData = getTextureId(
                                         getConfig.str("csl").replaceAll("%name%", URLEncoder.encode(strings[1], "UTF-8"))
                                 );
+
+                                String isSlim;
+                                String textureId;
+
+                                if (textureIdData == null) {
+                                    isSlim = "false";
+                                    textureId = null;
+                                } else {
+                                    isSlim = textureIdData[0];
+                                    textureId = textureIdData[1];
+                                }
 
                                 if (textureId == null) {
                                     commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.RequestError")));
@@ -140,7 +151,8 @@ public class BungeeCommand extends Command implements TabExecutor {
                                 String[] MineSkinApi = MineSkinApi(
                                         getConfig.str("mineskinapi"),
                                         picName,
-                                        basePath + "\\Cache\\" + picName
+                                        basePath + "\\Cache\\" + picName,
+                                        isSlim
                                 );
 
                                 if (MineSkinApi == null) {

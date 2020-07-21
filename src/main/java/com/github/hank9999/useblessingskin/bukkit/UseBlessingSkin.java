@@ -29,17 +29,19 @@ public final class UseBlessingSkin extends JavaPlugin {
         saveDefaultConfig();
         reloadConfig();
 
-        try {
-            MetricsLite metrics = new MetricsLite(this, 7957);
-            getLogger().info(ChatColor.GOLD + "bStats Metrics Enable");
-        } catch (Exception exception) {
-            getLogger().warning("An error occurred while enabling bStats Metrics!");
+        if (!getDescription().getVersion().contains("dev")) {
+            try {
+                MetricsLite metrics = new MetricsLite(this, 7957);
+                getLogger().info(ChatColor.GOLD + "bStats Metrics Enable");
+            } catch (Exception exception) {
+                getLogger().warning("An error occurred while enabling bStats Metrics!");
+            }
+
+            new Updater();
         }
 
         Objects.requireNonNull(getServer().getPluginCommand("bskin")).setExecutor(new BukkitCommand());
         Objects.requireNonNull(getServer().getPluginCommand("bskin")).setTabCompleter(new BukkitCommand());
-
-        new Updater();
 
         getLogger().info(ChatColor.BLUE + "UseBlessingSkin插件已启用");
         getLogger().info(ChatColor.GOLD + "版本 v" + getDescription().getVersion());

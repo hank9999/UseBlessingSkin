@@ -25,16 +25,18 @@ final class MineSkinResponse {
 }
 
 final public class Response {
-    public static String TextureIdParser(String profile) {
+    public static String[] TextureIdParser(String profile) {
         SkinWebResponse item = new Gson().fromJson(profile, SkinWebResponse.class);
         String texture_id = null;
+        String isSlim = "false";
         if (item.skins.steve != null) {
             texture_id = item.skins.steve;
         }
         if (item.skins.slim != null) {
             texture_id = item.skins.slim;
+            isSlim = "true";
         }
-        return texture_id;
+        return new String[] {isSlim, texture_id};
     }
 
     public static String[] MineSkinApiParser(String jsonData) {

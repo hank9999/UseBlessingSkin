@@ -49,14 +49,16 @@ public final class UseBlessingSkin extends Plugin {
 
         getProxy().getPluginManager().registerCommand(this, new BungeeCommand("bskin"));
 
-        try {
-            MetricsLite metrics = new MetricsLite(this, 7959);
-            getLogger().info(ChatColor.GOLD + "bStats Metrics Enable");
-        } catch (Exception exception) {
-            getLogger().warning("An error occurred while enabling bStats Metrics!");
-        }
+        if (!getDescription().getVersion().contains("dev")) {
+            try {
+                MetricsLite metrics = new MetricsLite(this, 7959);
+                getLogger().info(ChatColor.GOLD + "bStats Metrics Enable");
+            } catch (Exception exception) {
+                getLogger().warning("An error occurred while enabling bStats Metrics!");
+            }
 
-        new Updater();
+            new Updater();
+        }
 
         getLogger().info("UseBlessingSkin Enable");
         getLogger().info(ChatColor.GOLD + "Version v" + getDescription().getVersion());
