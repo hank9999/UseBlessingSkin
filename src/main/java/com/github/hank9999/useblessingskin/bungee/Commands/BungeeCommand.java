@@ -6,11 +6,11 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
-import skinsrestorer.bungee.SkinsRestorer;
-import skinsrestorer.shared.storage.SkinStorage;
+import net.skinsrestorer.api.PlayerWrapper;
+import net.skinsrestorer.bungee.SkinsRestorer;
+import net.skinsrestorer.shared.storage.SkinStorage;
 
 import java.net.URLEncoder;
 
@@ -133,7 +133,7 @@ public class BungeeCommand extends Command implements TabExecutor {
                                         commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.SaveTextureSuccess")));
                                     }
                                 } else {
-                                    picName = UUID.randomUUID().toString() + ".png";
+                                    picName = UUID.randomUUID() + ".png";
                                     if (!savePic(
                                             getConfig.str("texture").replaceAll("%textureId%", textureId),
                                             basePath + "\\Cache\\",
@@ -174,7 +174,7 @@ public class BungeeCommand extends Command implements TabExecutor {
 
                                 skinStorage.setSkinData(" " + commandSender.getName(), skinStorage.createProperty("textures", value, signature), "9223243187835955807");
                                 skinStorage.setPlayerSkin(commandSender.getName(), " " + commandSender.getName());
-                                skinsRestorer.getSkinsRestorerBungeeAPI().applySkin((ProxiedPlayer) commandSender);
+                                skinsRestorer.getSkinsRestorerBungeeAPI().applySkin((PlayerWrapper) commandSender);
 
                                 commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.SetSkinSuccess")));
 

@@ -8,12 +8,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import skinsrestorer.bukkit.SkinsRestorer;
-import skinsrestorer.shared.storage.SkinStorage;
+import net.skinsrestorer.bukkit.SkinsRestorer;
+import net.skinsrestorer.shared.storage.SkinStorage;
+import net.skinsrestorer.api.PlayerWrapper;
+import org.jetbrains.annotations.NotNull;
 
 import java.net.URLEncoder;
 import java.util.*;
@@ -25,7 +26,7 @@ final public class BukkitCommand implements TabExecutor {
     private final String basePath = UseBlessingSkin.plugin.getDataFolder().toString();
 
     @Override
-    final public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+    final public boolean onCommand(@NotNull CommandSender commandSender, Command command, @NotNull String s, @NotNull String[] strings) {
         if (command.getName().equalsIgnoreCase("bskin")) {
             if (strings.length == 0) {
                 commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_BLUE + "Version: v" + UseBlessingSkin.plugin.getDescription().getVersion());
@@ -118,7 +119,7 @@ final public class BukkitCommand implements TabExecutor {
                                     }
 
                                 } else {
-                                    picName = UUID.randomUUID().toString() + ".png";
+                                    picName = UUID.randomUUID() + ".png";
                                     if (!savePic(
                                             getConfig.str("texture").replaceAll("%textureId%", textureId),
                                             basePath + "\\Cache\\",
@@ -159,7 +160,7 @@ final public class BukkitCommand implements TabExecutor {
 
                                 skinStorage.setSkinData(" " + commandSender.getName(), skinStorage.createProperty("textures", value, signature), "9223243187835955807");
                                 skinStorage.setPlayerSkin(commandSender.getName(), " " + commandSender.getName());
-                                skinsRestorer.getSkinsRestorerBukkitAPI().applySkin((Player) commandSender);
+                                skinsRestorer.getSkinsRestorerBukkitAPI().applySkin((PlayerWrapper) commandSender);
 
                                 commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.SetSkinSuccess"));
 
@@ -178,7 +179,7 @@ final public class BukkitCommand implements TabExecutor {
     }
 
 
-    final public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    final public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         if (args.length > 1) {
             return Collections.emptyList();
         }
