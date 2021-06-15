@@ -4,6 +4,7 @@ main: com.github.hank9999.useblessingskin.bukkit.UseBlessingSkin
 depend: [SkinsRestorer]
 authors: [hank9999]
 description: 让SkinsRestorer使用Blessing Skin Server搭建的皮肤站上的皮肤!
+api-version: 1.13
 
 permissions:
   UseBlessingSkin.admin:
