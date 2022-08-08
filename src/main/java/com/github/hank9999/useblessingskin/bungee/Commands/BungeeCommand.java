@@ -174,7 +174,7 @@ public class BungeeCommand extends Command implements TabExecutor {
 
                                 skinsRestorerAPI.setSkin(commandSender.getName(), " " + commandSender.getName());
 
-                                skinsRestorerAPI.applySkin((PlayerWrapper) commandSender);
+                                skinsRestorerAPI.applySkin(new PlayerWrapper(commandSender));
 
                                 commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.SetSkinSuccess")));
 

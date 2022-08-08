@@ -161,7 +161,7 @@ final public class BukkitCommand implements TabExecutor {
 
                                 skinsRestorerAPI.setSkin(commandSender.getName(), " " + commandSender.getName());
 
-                                skinsRestorerAPI.applySkin((PlayerWrapper) commandSender);
+                                skinsRestorerAPI.applySkin(new PlayerWrapper(commandSender));
 
                                 commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.SetSkinSuccess"));
 
