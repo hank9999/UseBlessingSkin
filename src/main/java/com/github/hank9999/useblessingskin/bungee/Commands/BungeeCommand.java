@@ -9,14 +9,14 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
 import net.skinsrestorer.api.PlayerWrapper;
-import net.skinsrestorer.bungee.SkinsRestorer;
-import net.skinsrestorer.shared.storage.SkinStorage;
+import net.skinsrestorer.api.property.IProperty;
 
 import java.net.URLEncoder;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.github.hank9999.useblessingskin.bukkit.UseBlessingSkin.skinsRestorerAPI;
 import static com.github.hank9999.useblessingskin.shared.utils.*;
 
 
@@ -169,12 +169,12 @@ public class BungeeCommand extends Command implements TabExecutor {
 
                                 commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.UploadTextureSuccess")));
 
-                                SkinsRestorer skinsRestorer = SkinsRestorer.getInstance();
-                                SkinStorage skinStorage = skinsRestorer.getSkinStorage();
+                                IProperty iProperty = skinsRestorerAPI.createPlatformProperty("textures", value, signature);
+                                skinsRestorerAPI.setSkinData(" " + commandSender.getName(), iProperty, 9223243187835955807L);
 
-                                skinStorage.setSkinData(" " + commandSender.getName(), skinStorage.createProperty("textures", value, signature), "9223243187835955807");
-                                skinStorage.setPlayerSkin(commandSender.getName(), " " + commandSender.getName());
-                                skinsRestorer.getSkinsRestorerBungeeAPI().applySkin((PlayerWrapper) commandSender);
+                                skinsRestorerAPI.setSkin(commandSender.getName(), " " + commandSender.getName());
+
+                                skinsRestorerAPI.applySkin((PlayerWrapper) commandSender);
 
                                 commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.SetSkinSuccess")));
 

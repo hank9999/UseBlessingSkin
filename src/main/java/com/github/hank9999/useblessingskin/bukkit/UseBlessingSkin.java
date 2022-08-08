@@ -4,6 +4,7 @@ import com.github.hank9999.useblessingskin.bukkit.Commands.BukkitCommand;
 import com.github.hank9999.useblessingskin.bukkit.bStats.MetricsLite;
 
 import com.github.hank9999.useblessingskin.bukkit.Update.Updater;
+import net.skinsrestorer.api.SkinsRestorerAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -12,6 +13,7 @@ import java.util.Objects;
 public final class UseBlessingSkin extends JavaPlugin {
 
     public static UseBlessingSkin plugin;
+    public static SkinsRestorerAPI skinsRestorerAPI;
 
     @Override
     public void onLoad() {
@@ -21,7 +23,7 @@ public final class UseBlessingSkin extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
-
+        skinsRestorerAPI = SkinsRestorerAPI.getApi();
         if (!getDataFolder().exists()) {
             getDataFolder().mkdir();
         }
@@ -50,6 +52,7 @@ public final class UseBlessingSkin extends JavaPlugin {
     @Override
     public void onDisable() {
         plugin = null;
+        skinsRestorerAPI = null;
         getLogger().info(ChatColor.BLUE + "UseBlessingSkin插件已禁用");
     }
 }

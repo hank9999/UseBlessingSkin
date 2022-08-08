@@ -2,8 +2,11 @@ package com.github.hank9999.useblessingskin.bukkit.Commands;
 
 import com.github.hank9999.useblessingskin.bukkit.Libs.getConfig;
 import com.github.hank9999.useblessingskin.bukkit.UseBlessingSkin;
+
+import static com.github.hank9999.useblessingskin.bukkit.UseBlessingSkin.skinsRestorerAPI;
 import static com.github.hank9999.useblessingskin.shared.utils.*;
 
+import net.skinsrestorer.api.property.IProperty;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -11,8 +14,6 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import net.skinsrestorer.bukkit.SkinsRestorer;
-import net.skinsrestorer.shared.storage.SkinStorage;
 import net.skinsrestorer.api.PlayerWrapper;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,7 +27,7 @@ final public class BukkitCommand implements TabExecutor {
     private final String basePath = UseBlessingSkin.plugin.getDataFolder().toString();
 
     @Override
-    final public boolean onCommand(@NotNull CommandSender commandSender, Command command, @NotNull String s, @NotNull String[] strings) {
+    public boolean onCommand(@NotNull CommandSender commandSender, Command command, @NotNull String s, @NotNull String[] strings) {
         if (command.getName().equalsIgnoreCase("bskin")) {
             if (strings.length == 0) {
                 commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_BLUE + "Version: v" + UseBlessingSkin.plugin.getDescription().getVersion());
@@ -155,12 +156,12 @@ final public class BukkitCommand implements TabExecutor {
 
                                 commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.UploadTextureSuccess"));
 
-                                SkinsRestorer skinsRestorer = JavaPlugin.getPlugin(SkinsRestorer.class);
-                                SkinStorage skinStorage = skinsRestorer.getSkinStorage();
+                                IProperty iProperty = skinsRestorerAPI.createPlatformProperty("textures", value, signature);
+                                skinsRestorerAPI.setSkinData(" " + commandSender.getName(), iProperty, 9223243187835955807L);
 
-                                skinStorage.setSkinData(" " + commandSender.getName(), skinStorage.createProperty("textures", value, signature), "9223243187835955807");
-                                skinStorage.setPlayerSkin(commandSender.getName(), " " + commandSender.getName());
-                                skinsRestorer.getSkinsRestorerBukkitAPI().applySkin((PlayerWrapper) commandSender);
+                                skinsRestorerAPI.setSkin(commandSender.getName(), " " + commandSender.getName());
+
+                                skinsRestorerAPI.applySkin((PlayerWrapper) commandSender);
 
                                 commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.SetSkinSuccess"));
 
@@ -179,7 +180,7 @@ final public class BukkitCommand implements TabExecutor {
     }
 
 
-    final public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         if (args.length > 1) {
             return Collections.emptyList();
         }

@@ -9,6 +9,7 @@ import com.github.hank9999.useblessingskin.bungee.Commands.BungeeCommand;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
+import net.skinsrestorer.api.SkinsRestorerAPI;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -18,6 +19,7 @@ public final class UseBlessingSkin extends Plugin {
 
     public static UseBlessingSkin instance;
     public static Configuration configuration;
+    public static SkinsRestorerAPI skinsRestorerAPI;
 
     @Override
     public void onLoad() {
@@ -27,6 +29,7 @@ public final class UseBlessingSkin extends Plugin {
     @Override
     public void onEnable() {
         instance = this;
+        skinsRestorerAPI = SkinsRestorerAPI.getApi();
         if (!getDataFolder().exists()) {
             getDataFolder().mkdir();
         }
@@ -67,6 +70,7 @@ public final class UseBlessingSkin extends Plugin {
     @Override
     public void onDisable() {
         instance = null;
+        skinsRestorerAPI = null;
         getLogger().info(ChatColor.BLUE + "UseBlessingSkin Disable");
     }
 

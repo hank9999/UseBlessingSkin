@@ -6,7 +6,7 @@
 
     <groupId>com.github.hank9999</groupId>
     <artifactId>UseBlessingSkin</artifactId>
-    <version>1.0.5</version>
+    <version>1.1.0</version>
     <packaging>jar</packaging>
 
     <name>UseBlessingSkin</name>
@@ -55,9 +55,8 @@
 
     <repositories>
         <repository>
-            <id>aliyun</id>
-            <name>aliyun</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <id>codemc</id>
+            <url>https://repo.codemc.org/repository/maven-snapshots/</url>
         </repository>
         <repository>
             <id>spigot</id>
@@ -66,14 +65,6 @@
         <repository>
             <id>bungeecord</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </repository>
-        <repository>
-            <id>dmulloy2</id>
-            <url>https://repo.dmulloy2.net/nexus/repository/public/</url>
-        </repository>
-        <repository>
-            <id>codemc</id>
-            <url>https://repo.codemc.org/repository/maven-snapshots/</url>
         </repository>
     </repositories>
 
@@ -86,8 +77,8 @@
         </dependency>
         <dependency>
             <groupId>net.skinsrestorer</groupId>
-            <artifactId>skinsrestorer</artifactId>
-            <version>14.0.0-SNAPSHOT</version>
+            <artifactId>skinsrestorer-api</artifactId>
+            <version>14.2.2-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
