@@ -16,7 +16,7 @@ import java.net.URLEncoder;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.github.hank9999.useblessingskin.bukkit.UseBlessingSkin.skinsRestorerAPI;
+import static com.github.hank9999.useblessingskin.bungee.UseBlessingSkin.skinsRestorerAPI;
 import static com.github.hank9999.useblessingskin.shared.utils.*;
 
 
