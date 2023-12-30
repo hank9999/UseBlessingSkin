@@ -1,5 +1,5 @@
 # UseBlessingSkin
-**支持了最新的 SkinsRestorer 14.2**  
+**支持了最新的 SkinsRestorer 15.0.x**  
 让 SkinsRestorer 使用 BlessingSkin 搭建的皮肤站上的皮肤!   
 支持 CSL API 也可以使用本插件  
 支持 BungeeCord 和 Bukkit
