@@ -6,7 +6,7 @@
 
     <groupId>com.github.hank9999</groupId>
     <artifactId>UseBlessingSkin</artifactId>
-    <version>1.1.1</version>
+    <version>1.2.0</version>
     <packaging>jar</packaging>
 
     <name>UseBlessingSkin</name>
@@ -78,7 +78,7 @@
         <dependency>
             <groupId>net.skinsrestorer</groupId>
             <artifactId>skinsrestorer-api</artifactId>
-            <version>14.2.2-SNAPSHOT</version>
+            <version>15.0.4-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

@@ -6,15 +6,14 @@ import com.github.hank9999.useblessingskin.bukkit.UseBlessingSkin;
 import static com.github.hank9999.useblessingskin.bukkit.UseBlessingSkin.skinsRestorerAPI;
 import static com.github.hank9999.useblessingskin.shared.utils.*;
 
-import net.skinsrestorer.api.property.IProperty;
+import net.skinsrestorer.api.property.InputDataResult;
+import net.skinsrestorer.api.property.SkinProperty;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import net.skinsrestorer.api.PlayerWrapper;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URLEncoder;
@@ -156,12 +155,26 @@ final public class BukkitCommand implements TabExecutor {
 
                                 commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.UploadTextureSuccess"));
 
-                                IProperty iProperty = skinsRestorerAPI.createPlatformProperty("textures", value, signature);
-                                skinsRestorerAPI.setSkinData(" " + commandSender.getName(), iProperty, 9223243187835955807L);
 
-                                skinsRestorerAPI.setSkin(commandSender.getName(), " " + commandSender.getName());
+                                UseBlessingSkin.skinStorage.setCustomSkinData(" " + commandSender.getName(), SkinProperty.of(value, signature));
 
-                                skinsRestorerAPI.applySkin(new PlayerWrapper(commandSender));
+                                Optional<InputDataResult> result = UseBlessingSkin.skinStorage.findOrCreateSkinData(" " + commandSender.getName());
+
+                                if (!result.isPresent()) {
+                                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.UnknownError"));
+                                    return;
+                                }
+
+                                Player player = UseBlessingSkin.plugin.getServer().getPlayer(commandSender.getName());
+
+                                if (player == null) {
+                                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.UnknownError"));
+                                    return;
+                                }
+
+                                UseBlessingSkin.playerStorage.setSkinIdOfPlayer(player.getUniqueId(), result.get().getIdentifier());
+
+                                skinsRestorerAPI.getSkinApplier(Player.class).applySkin(player);
 
                                 commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.SetSkinSuccess"));
 

@@ -6,17 +6,18 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
-import net.skinsrestorer.api.PlayerWrapper;
-import net.skinsrestorer.api.property.IProperty;
+import net.skinsrestorer.api.property.InputDataResult;
+import net.skinsrestorer.api.property.SkinProperty;
 
 import java.net.URLEncoder;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.github.hank9999.useblessingskin.bungee.UseBlessingSkin.skinsRestorerAPI;
+import static com.github.hank9999.useblessingskin.bungee.UseBlessingSkin.*;
 import static com.github.hank9999.useblessingskin.shared.utils.*;
 
 
@@ -169,12 +170,20 @@ public class BungeeCommand extends Command implements TabExecutor {
 
                                 commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.UploadTextureSuccess")));
 
-                                IProperty iProperty = skinsRestorerAPI.createPlatformProperty("textures", value, signature);
-                                skinsRestorerAPI.setSkinData(" " + commandSender.getName(), iProperty, 9223243187835955807L);
 
-                                skinsRestorerAPI.setSkin(commandSender.getName(), " " + commandSender.getName());
+                                skinStorage.setCustomSkinData(" " + commandSender.getName(), SkinProperty.of(value, signature));
 
-                                skinsRestorerAPI.applySkin(new PlayerWrapper(commandSender));
+                                Optional<InputDataResult> result = skinStorage.findOrCreateSkinData(" " + commandSender.getName());
+
+                                if (!result.isPresent()) {
+                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + getConfig.str("message.UnknownError")));
+                                    return;
+                                }
+
+                                ProxiedPlayer player = instance.getProxy().getPlayer(commandSender.getName());
+                                playerStorage.setSkinIdOfPlayer(player.getUniqueId(), result.get().getIdentifier());
+
+                                skinsRestorerAPI.getSkinApplier(ProxiedPlayer.class).applySkin(player);
 
                                 commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.SetSkinSuccess")));
 

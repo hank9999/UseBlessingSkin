@@ -9,7 +9,10 @@ import com.github.hank9999.useblessingskin.bungee.Commands.BungeeCommand;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
-import net.skinsrestorer.api.SkinsRestorerAPI;
+import net.skinsrestorer.api.SkinsRestorer;
+import net.skinsrestorer.api.SkinsRestorerProvider;
+import net.skinsrestorer.api.storage.PlayerStorage;
+import net.skinsrestorer.api.storage.SkinStorage;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -19,7 +22,9 @@ public final class UseBlessingSkin extends Plugin {
 
     public static UseBlessingSkin instance;
     public static Configuration configuration;
-    public static SkinsRestorerAPI skinsRestorerAPI;
+    public static SkinsRestorer skinsRestorerAPI;
+    public static SkinStorage skinStorage;
+    public static PlayerStorage playerStorage;
 
     @Override
     public void onLoad() {
@@ -29,7 +34,11 @@ public final class UseBlessingSkin extends Plugin {
     @Override
     public void onEnable() {
         instance = this;
-        skinsRestorerAPI = SkinsRestorerAPI.getApi();
+
+        skinsRestorerAPI = SkinsRestorerProvider.get();
+        skinStorage = skinsRestorerAPI.getSkinStorage();
+        playerStorage = skinsRestorerAPI.getPlayerStorage();
+
         if (!getDataFolder().exists()) {
             getDataFolder().mkdir();
         }
@@ -71,6 +80,8 @@ public final class UseBlessingSkin extends Plugin {
     public void onDisable() {
         instance = null;
         skinsRestorerAPI = null;
+        skinStorage = null;
+        playerStorage = null;
         getLogger().info(ChatColor.BLUE + "UseBlessingSkin Disable");
     }
 
