@@ -66,7 +66,7 @@
     <repositories>
         <repository>
             <id>codemc</id>
-            <url>https://repo.codemc.org/repository/maven-snapshots/</url>
+            <url>https://repo.codemc.org/repository/maven-public/</url>
         </repository>
         <repository>
             <id>spigot</id>
@@ -96,7 +96,7 @@
         <dependency>
             <groupId>net.skinsrestorer</groupId>
             <artifactId>skinsrestorer-api</artifactId>
-            <version>15.0.4-SNAPSHOT</version>
+            <version>15.0.6</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
