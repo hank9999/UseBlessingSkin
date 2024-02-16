@@ -2,11 +2,11 @@
 **支持了最新的 SkinsRestorer 15.0.x**  
 让 SkinsRestorer 使用 BlessingSkin 搭建的皮肤站上的皮肤!   
 支持 CSL API 也可以使用本插件  
-支持 BungeeCord 和 Bukkit
+支持 BungeeCord / Bukkit 和 Velocity
 
 ## 使用方法
  1. 下载最新的 Releases 版本 (Actions 里有开发版)
- 2. 扔进 Plugins 文件夹
+ 2. 扔进 Plugins 文件夹 (群组服仅安装在代理 (Velocity/BungeeCord) 上)
  3. 使用 plugman 加载或重启服务器
 
 ## 权限
