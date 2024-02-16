@@ -53,7 +53,7 @@ public class UseBlessingSkin {
                 componentLogger.warn("An error occurred while enabling bStats Metrics!");
             }
 
-            if (configManager.bool("update")) {
+            if (!configManager.checkPath("update") || configManager.bool("update")) {
                 new Updater(server, plugin, componentLogger);
             }
         }

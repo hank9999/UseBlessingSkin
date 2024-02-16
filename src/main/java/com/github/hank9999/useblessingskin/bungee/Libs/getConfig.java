@@ -17,6 +17,10 @@ final public class getConfig {
         return UseBlessingSkin.configuration.getBoolean(path);
     }
 
+    public static Boolean checkPath(String path) {
+        return UseBlessingSkin.configuration.contains(path);
+    }
+
     public static Boolean reload() {
         try {
             UseBlessingSkin.configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(UseBlessingSkin.instance.getDataFolder(), "config.yml"));

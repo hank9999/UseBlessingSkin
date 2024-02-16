@@ -11,4 +11,8 @@ final public class getConfig {
     public static Boolean bool(String path) {
         return UseBlessingSkin.plugin.getConfig().getBoolean(path);
     }
+
+    public static Boolean checkPath(String path) {
+        return UseBlessingSkin.plugin.getConfig().contains(path);
+    }
 }

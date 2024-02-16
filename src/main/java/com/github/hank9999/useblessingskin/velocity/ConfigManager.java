@@ -68,6 +68,10 @@ public class ConfigManager {
         return configuration.node((Object[]) path.split("\\.")).getBoolean();
     }
 
+    public boolean checkPath(String path) {
+        return configuration.node((Object[]) path.split("\\.")).isNull();
+    }
+
     public boolean reloadConfig() {
         return loadConfig();
     }

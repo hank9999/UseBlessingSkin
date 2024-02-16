@@ -1,6 +1,7 @@
 package com.github.hank9999.useblessingskin.bukkit;
 
 import com.github.hank9999.useblessingskin.bukkit.Commands.BukkitCommand;
+import com.github.hank9999.useblessingskin.bukkit.Libs.getConfig;
 import com.github.hank9999.useblessingskin.bukkit.bStats.MetricsLite;
 
 import com.github.hank9999.useblessingskin.bukkit.Update.Updater;
@@ -46,7 +47,9 @@ public final class UseBlessingSkin extends JavaPlugin {
                 getLogger().warning("An error occurred while enabling bStats Metrics!");
             }
 
-            new Updater();
+            if (!getConfig.checkPath("update") || getConfig.bool("update")) {
+                new Updater();
+            }
         }
 
         Objects.requireNonNull(getServer().getPluginCommand("bskin")).setExecutor(new BukkitCommand());

@@ -1,5 +1,6 @@
 package com.github.hank9999.useblessingskin.bungee;
 
+import com.github.hank9999.useblessingskin.bungee.Libs.getConfig;
 import com.github.hank9999.useblessingskin.bungee.Update.Updater;
 import com.github.hank9999.useblessingskin.bungee.bStats.MetricsLite;
 import net.md_5.bungee.api.ChatColor;
@@ -69,7 +70,9 @@ public final class UseBlessingSkin extends Plugin {
                 getLogger().warning("An error occurred while enabling bStats Metrics!");
             }
 
-            new Updater();
+            if (!getConfig.checkPath("update") || getConfig.bool("update")) {
+                new Updater();
+            }
         }
 
         getLogger().info("UseBlessingSkin Enable");
