@@ -14,7 +14,7 @@ final public class utils {
             String profile = getUrl(url);
             if (profile == null) {
                 return new String[] {"false", "Role does not exist"};
-            } else if (profile.isEmpty()) {
+            } else if (profile.isEmpty() || profile.equals("{}")) {
                 return new String[] {"false", "Role response is empty"};
             }
             String[] TextureIdParseData = TextureIdParser(profile);
