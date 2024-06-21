@@ -19,6 +19,7 @@ import net.skinsrestorer.api.property.SkinProperty;
 import net.skinsrestorer.api.storage.PlayerStorage;
 import net.skinsrestorer.api.storage.SkinStorage;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.file.Path;
@@ -173,10 +174,10 @@ public final class VelocityCommand implements SimpleCommand {
 
             if (configManager.bool("cache")) {
                 picName = textureId + ".png";
-                if (!checkCache(dataFolder + "\\Cache\\" + picName)) {
+                if (!checkCache(dataFolder + File.separator + "Cache" + File.separator + picName)) {
                     if (!savePic(
                             configManager.str("texture").replaceAll("%textureId%", textureId),
-                            dataFolder + "\\Cache\\",
+                            dataFolder + File.separator + "Cache" + File.separator,
                             picName)
                     ) {
                         source.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
@@ -193,7 +194,7 @@ public final class VelocityCommand implements SimpleCommand {
                 picName = UUID.randomUUID() + ".png";
                 if (!savePic(
                         configManager.str("texture").replaceAll("%textureId%", textureId),
-                        dataFolder + "\\Cache\\",
+                        dataFolder + File.separator + "Cache" + File.separator,
                         picName)
                 ) {
                     source.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
@@ -214,7 +215,7 @@ public final class VelocityCommand implements SimpleCommand {
             String[] MineSkinApi = MineSkinApi(
                     configManager.str("mineskinapi"),
                     picName,
-                    dataFolder + "\\Cache\\" + picName,
+                    dataFolder + File.separator + "Cache" + File.separator + picName,
                     isSlim
             );
             if (MineSkinApi == null) {

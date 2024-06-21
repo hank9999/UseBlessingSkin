@@ -12,6 +12,7 @@ import net.md_5.bungee.api.plugin.TabExecutor;
 import net.skinsrestorer.api.property.InputDataResult;
 import net.skinsrestorer.api.property.SkinProperty;
 
+import java.io.File;
 import java.net.URLEncoder;
 
 import java.util.*;
@@ -121,10 +122,10 @@ public class BungeeCommand extends Command implements TabExecutor {
 
                                 if (getConfig.bool("cache")) {
                                     picName = textureId + ".png";
-                                    if (!checkCache(basePath + "\\Cache\\" + picName)) {
+                                    if (!checkCache(basePath + File.separator + "Cache" + File.separator + picName)) {
                                         if (!savePic(
                                                 getConfig.str("texture").replaceAll("%textureId%", textureId),
-                                                basePath + "\\Cache\\",
+                                                basePath + File.separator + "Cache" + File.separator,
                                                 picName)
                                         ) {
                                             commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.SaveTextureError")));
@@ -137,7 +138,7 @@ public class BungeeCommand extends Command implements TabExecutor {
                                     picName = UUID.randomUUID() + ".png";
                                     if (!savePic(
                                             getConfig.str("texture").replaceAll("%textureId%", textureId),
-                                            basePath + "\\Cache\\",
+                                            basePath + File.separator + "Cache" + File.separator,
                                             picName)
                                     ) {
                                         commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.SaveTextureError")));
@@ -152,7 +153,7 @@ public class BungeeCommand extends Command implements TabExecutor {
                                 String[] MineSkinApi = MineSkinApi(
                                         getConfig.str("mineskinapi"),
                                         picName,
-                                        basePath + "\\Cache\\" + picName,
+                                        basePath + File.separator + "Cache" + File.separator + picName,
                                         isSlim
                                 );
 

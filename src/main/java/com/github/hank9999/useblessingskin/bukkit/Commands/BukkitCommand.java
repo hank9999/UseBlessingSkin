@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.net.URLEncoder;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -105,10 +106,10 @@ final public class BukkitCommand implements TabExecutor {
 
                                 if (getConfig.bool("cache")) {
                                     picName = textureId + ".png";
-                                    if (!checkCache(basePath + "\\Cache\\" + picName)) {
+                                    if (!checkCache(basePath + File.separator + "Cache" + File.separator + picName)) {
                                         if (!savePic(
                                                 getConfig.str("texture").replaceAll("%textureId%", textureId),
-                                                basePath + "\\Cache\\",
+                                                basePath + File.separator + "Cache" + File.separator,
                                                 picName)
                                         ) {
                                             commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.SaveTextureError"));
@@ -122,7 +123,7 @@ final public class BukkitCommand implements TabExecutor {
                                     picName = UUID.randomUUID() + ".png";
                                     if (!savePic(
                                             getConfig.str("texture").replaceAll("%textureId%", textureId),
-                                            basePath + "\\Cache\\",
+                                            basePath + File.separator + "Cache" + File.separator,
                                             picName)
                                     ) {
                                         commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.SaveTextureError"));
@@ -137,7 +138,7 @@ final public class BukkitCommand implements TabExecutor {
                                 String[] MineSkinApi = MineSkinApi(
                                         getConfig.str("mineskinapi"),
                                         picName,
-                                        basePath + "\\Cache\\" + picName,
+                                        basePath + File.separator + "Cache" + File.separator + picName,
                                         isSlim
                                 );
 
