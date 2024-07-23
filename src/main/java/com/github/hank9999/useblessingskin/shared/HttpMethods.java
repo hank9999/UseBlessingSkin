@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
 
-final public class httpMethods {
+final public class HttpMethods {
     private static final OkHttpClient client = new OkHttpClient();
 
     public static String getUrl(String url) throws Exception {

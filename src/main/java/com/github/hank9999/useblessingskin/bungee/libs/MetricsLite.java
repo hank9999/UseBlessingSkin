@@ -1,4 +1,4 @@
-package com.github.hank9999.useblessingskin.bungee.bStats;
+package com.github.hank9999.useblessingskin.bungee.libs;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

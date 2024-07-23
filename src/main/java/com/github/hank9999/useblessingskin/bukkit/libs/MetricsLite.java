@@ -1,4 +1,4 @@
-package com.github.hank9999.useblessingskin.bukkit.bStats;
+package com.github.hank9999.useblessingskin.bukkit.libs;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

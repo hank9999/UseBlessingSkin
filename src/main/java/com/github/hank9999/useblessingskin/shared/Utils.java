@@ -6,9 +6,9 @@ import java.io.File;
 import java.io.IOException;
 
 import static com.github.hank9999.useblessingskin.shared.Response.*;
-import static com.github.hank9999.useblessingskin.shared.httpMethods.*;
+import static com.github.hank9999.useblessingskin.shared.HttpMethods.*;
 
-final public class utils {
+final public class Utils {
     public static String[] getTextureId(String url) {
         try {
             String profile = getUrl(url);

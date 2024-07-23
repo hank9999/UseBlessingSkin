@@ -1,7 +1,9 @@
 package com.github.hank9999.useblessingskin.velocity;
 
-import com.github.hank9999.useblessingskin.velocity.Commands.VelocityCommand;
-import com.github.hank9999.useblessingskin.velocity.bStats.Metrics;
+import com.github.hank9999.useblessingskin.velocity.commands.VelocityCommand;
+import com.github.hank9999.useblessingskin.velocity.libs.ConfigManager;
+import com.github.hank9999.useblessingskin.velocity.libs.Metrics;
+import com.github.hank9999.useblessingskin.velocity.libs.Updater;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;

@@ -1,6 +1,6 @@
-package com.github.hank9999.useblessingskin.velocity.Commands;
+package com.github.hank9999.useblessingskin.velocity.commands;
 
-import com.github.hank9999.useblessingskin.velocity.ConfigManager;
+import com.github.hank9999.useblessingskin.velocity.libs.ConfigManager;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.command.SimpleCommand;
 import com.velocitypowered.api.plugin.PluginContainer;
@@ -27,7 +27,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-import static com.github.hank9999.useblessingskin.shared.utils.*;
+import static com.github.hank9999.useblessingskin.shared.Utils.*;
 
 public final class VelocityCommand implements SimpleCommand {
     private final ProxyServer server;

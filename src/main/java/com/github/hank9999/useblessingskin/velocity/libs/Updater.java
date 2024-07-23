@@ -1,6 +1,6 @@
-package com.github.hank9999.useblessingskin.velocity;
+package com.github.hank9999.useblessingskin.velocity.libs;
 
-import com.github.hank9999.useblessingskin.shared.httpMethods;
+import com.github.hank9999.useblessingskin.shared.HttpMethods;
 import com.velocitypowered.api.plugin.PluginContainer;
 import com.velocitypowered.api.proxy.ProxyServer;
 import net.kyori.adventure.text.Component;
@@ -26,7 +26,7 @@ public class Updater {
     private void checkUpdate() {
         CompletableFuture.runAsync(() -> {
             try {
-                String Response = httpMethods.getUrl("https://hank9999.github.io/UseBlessingSkin/version.txt");
+                String Response = HttpMethods.getUrl("https://hank9999.github.io/UseBlessingSkin/version.txt");
                 if (Response == null) {
                     throw new Exception("Response Empty");
                 }

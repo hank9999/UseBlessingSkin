@@ -1,10 +1,10 @@
-package com.github.hank9999.useblessingskin.bukkit.Libs;
+package com.github.hank9999.useblessingskin.bukkit.libs;
 
 import com.github.hank9999.useblessingskin.bukkit.UseBlessingSkin;
 
 import java.util.Objects;
 
-final public class getConfig {
+final public class GetConfig {
     public static String str(String path) {
         return Objects.requireNonNull(UseBlessingSkin.plugin.getConfig().getString(path));
     }

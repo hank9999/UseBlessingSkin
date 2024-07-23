@@ -1,4 +1,4 @@
-package com.github.hank9999.useblessingskin.velocity;
+package com.github.hank9999.useblessingskin.velocity.libs;
 
 import com.google.inject.Inject;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;

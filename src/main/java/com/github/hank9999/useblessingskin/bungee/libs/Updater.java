@@ -1,7 +1,7 @@
-package com.github.hank9999.useblessingskin.bungee.Update;
+package com.github.hank9999.useblessingskin.bungee.libs;
 
 import com.github.hank9999.useblessingskin.bungee.UseBlessingSkin;
-import com.github.hank9999.useblessingskin.shared.httpMethods;
+import com.github.hank9999.useblessingskin.shared.HttpMethods;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -21,7 +21,7 @@ final public class Updater {
     private void checkUpdate() {
         this.plugin.getProxy().getScheduler().runAsync(this.plugin, () -> {
             try {
-                String Response = httpMethods.getUrl("https://hank9999.github.io/UseBlessingSkin/version.txt");
+                String Response = HttpMethods.getUrl("https://hank9999.github.io/UseBlessingSkin/version.txt");
                 if (Response == null) {
                     throw new Exception("Response Empty");
                 }

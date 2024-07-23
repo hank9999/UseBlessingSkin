@@ -12,7 +12,7 @@
  *
  * Violations will result in a ban of your plugin and account from bStats.
  */
-package com.github.hank9999.useblessingskin.velocity.bStats;
+package com.github.hank9999.useblessingskin.velocity.libs;
 
 import com.google.inject.Inject;
 import com.velocitypowered.api.plugin.PluginContainer;

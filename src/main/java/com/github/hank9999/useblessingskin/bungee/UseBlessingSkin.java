@@ -1,12 +1,12 @@
 package com.github.hank9999.useblessingskin.bungee;
 
-import com.github.hank9999.useblessingskin.bungee.Libs.getConfig;
-import com.github.hank9999.useblessingskin.bungee.Update.Updater;
-import com.github.hank9999.useblessingskin.bungee.bStats.MetricsLite;
+import com.github.hank9999.useblessingskin.bungee.libs.GetConfig;
+import com.github.hank9999.useblessingskin.bungee.libs.Updater;
+import com.github.hank9999.useblessingskin.bungee.libs.MetricsLite;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.plugin.Plugin;
 
-import com.github.hank9999.useblessingskin.bungee.Commands.BungeeCommand;
+import com.github.hank9999.useblessingskin.bungee.commands.BungeeCommand;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
@@ -70,7 +70,7 @@ public final class UseBlessingSkin extends Plugin {
                 getLogger().warning("An error occurred while enabling bStats Metrics!");
             }
 
-            if (!getConfig.checkPath("update") || getConfig.bool("update")) {
+            if (!GetConfig.checkPath("update") || GetConfig.bool("update")) {
                 new Updater();
             }
         }

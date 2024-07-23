@@ -1,4 +1,4 @@
-package com.github.hank9999.useblessingskin.bungee.Libs;
+package com.github.hank9999.useblessingskin.bungee.libs;
 
 import com.github.hank9999.useblessingskin.bungee.UseBlessingSkin;
 import net.md_5.bungee.config.ConfigurationProvider;
@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
-final public class getConfig {
+final public class GetConfig {
     public static String str(String path) {
         return Objects.requireNonNull(UseBlessingSkin.configuration.getString(path));
     }

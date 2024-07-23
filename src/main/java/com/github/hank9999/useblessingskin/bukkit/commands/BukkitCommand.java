@@ -1,10 +1,10 @@
-package com.github.hank9999.useblessingskin.bukkit.Commands;
+package com.github.hank9999.useblessingskin.bukkit.commands;
 
-import com.github.hank9999.useblessingskin.bukkit.Libs.getConfig;
+import com.github.hank9999.useblessingskin.bukkit.libs.GetConfig;
 import com.github.hank9999.useblessingskin.bukkit.UseBlessingSkin;
 
 import static com.github.hank9999.useblessingskin.bukkit.UseBlessingSkin.skinsRestorerAPI;
-import static com.github.hank9999.useblessingskin.shared.utils.*;
+import static com.github.hank9999.useblessingskin.shared.Utils.*;
 
 import net.skinsrestorer.api.property.InputDataResult;
 import net.skinsrestorer.api.property.SkinProperty;
@@ -36,10 +36,10 @@ final public class BukkitCommand implements TabExecutor {
                 return true;
             }
             if (strings[0].equalsIgnoreCase("help")) {
-                commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + "/bskin set <ID> " + getConfig.str("message.SetSkin"));
-                commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + getConfig.str("message.AboutIdInfo"));
-                commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_AQUA + getConfig.str("message.Support"));
-                commandSender.sendMessage(ChatColor.DARK_AQUA + getConfig.str("name") + " " + getConfig.str("url"));
+                commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + "/bskin set <ID> " + GetConfig.str("message.SetSkin"));
+                commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + GetConfig.str("message.AboutIdInfo"));
+                commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_AQUA + GetConfig.str("message.Support"));
+                commandSender.sendMessage(ChatColor.DARK_AQUA + GetConfig.str("name") + " " + GetConfig.str("url"));
                 if (commandSender.hasPermission("UseBlessingSkin.admin")) {
                     commandSender.sendMessage("");
                     commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + "/bskin reload  Reload Config");
@@ -48,20 +48,20 @@ final public class BukkitCommand implements TabExecutor {
             }
             if (strings[0].equalsIgnoreCase("reload")) {
                 if (!commandSender.hasPermission("UseBlessingSkin.admin")) {
-                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.DoNotHavePermission"));
+                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.DoNotHavePermission"));
                     return false;
                 }
                 UseBlessingSkin.plugin.reloadConfig();
-                commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.ReloadSuccess"));
+                commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + GetConfig.str("message.ReloadSuccess"));
                 return true;
             }
 
             if (strings[0].equalsIgnoreCase("set")) {
                 if (strings.length == 1) {
-                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + "/bskin set <ID> " + getConfig.str("message.SetSkin"));
-                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + getConfig.str("message.AboutIdInfo"));
-                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_AQUA + getConfig.str("message.Support"));
-                    commandSender.sendMessage(ChatColor.DARK_AQUA + getConfig.str("name") + " " + getConfig.str("url"));
+                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + "/bskin set <ID> " + GetConfig.str("message.SetSkin"));
+                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + GetConfig.str("message.AboutIdInfo"));
+                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_AQUA + GetConfig.str("message.Support"));
+                    commandSender.sendMessage(ChatColor.DARK_AQUA + GetConfig.str("name") + " " + GetConfig.str("url"));
                     return true;
                 } else {
                     (new BukkitRunnable() {
@@ -69,7 +69,7 @@ final public class BukkitCommand implements TabExecutor {
                             try {
 
                                 String[] textureIdData = getTextureId(
-                                        getConfig.str("csl").replaceAll("%name%", URLEncoder.encode(strings[1], "UTF-8"))
+                                        GetConfig.str("csl").replaceAll("%name%", URLEncoder.encode(strings[1], "UTF-8"))
                                 );
 
                                 String isSlim;
@@ -84,77 +84,77 @@ final public class BukkitCommand implements TabExecutor {
                                 }
 
                                 if (textureId == null) {
-                                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.RequestError"));
+                                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.RequestError"));
                                     return;
                                 } else if (textureId.equals("Role does not exist")) {
-                                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.RoleNotExist"));
+                                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.RoleNotExist"));
                                     return;
                                 } else if (textureId.equals("Role response is empty")) {
-                                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.RoleResponseEmpty"));
+                                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.RoleResponseEmpty"));
                                     return;
                                 } else if (textureId.equals("Role does not have skin")) {
-                                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.RoleSkinNotExist"));
-                                    if (getConfig.bool("cdn")) {
-                                        commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.IfCdnMakeRoleSkinNotExist"));
+                                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.RoleSkinNotExist"));
+                                    if (GetConfig.bool("cdn")) {
+                                        commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.IfCdnMakeRoleSkinNotExist"));
                                     }
                                     return;
                                 }
 
-                                commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.TextureIdGetSuccess") + " " + textureId);
+                                commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + GetConfig.str("message.TextureIdGetSuccess") + " " + textureId);
 
                                 String picName;
 
-                                if (getConfig.bool("cache")) {
+                                if (GetConfig.bool("cache")) {
                                     picName = textureId + ".png";
                                     if (!checkCache(basePath + File.separator + "Cache" + File.separator + picName)) {
                                         if (!savePic(
-                                                getConfig.str("texture").replaceAll("%textureId%", textureId),
+                                                GetConfig.str("texture").replaceAll("%textureId%", textureId),
                                                 basePath + File.separator + "Cache" + File.separator,
                                                 picName)
                                         ) {
-                                            commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.SaveTextureError"));
+                                            commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.SaveTextureError"));
                                             return;
                                         }
 
-                                        commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.SaveTextureSuccess"));
+                                        commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + GetConfig.str("message.SaveTextureSuccess"));
                                     }
 
                                 } else {
                                     picName = UUID.randomUUID() + ".png";
                                     if (!savePic(
-                                            getConfig.str("texture").replaceAll("%textureId%", textureId),
+                                            GetConfig.str("texture").replaceAll("%textureId%", textureId),
                                             basePath + File.separator + "Cache" + File.separator,
                                             picName)
                                     ) {
-                                        commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.SaveTextureError"));
+                                        commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.SaveTextureError"));
                                         return;
                                     }
 
-                                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.SaveTextureSuccess"));
+                                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + GetConfig.str("message.SaveTextureSuccess"));
                                 }
 
-                                commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_PURPLE + getConfig.str("message.UploadingTexture"));
+                                commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_PURPLE + GetConfig.str("message.UploadingTexture"));
 
                                 String[] MineSkinApi = MineSkinApi(
-                                        getConfig.str("mineskinapi"),
+                                        GetConfig.str("mineskinapi"),
                                         picName,
                                         basePath + File.separator + "Cache" + File.separator + picName,
                                         isSlim
                                 );
 
                                 if (MineSkinApi == null) {
-                                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.UploadTextureError"));
+                                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.UploadTextureError"));
                                     return;
                                 }
                                 if (!(MineSkinApi[0].equals("OK"))) {
-                                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.UploadTextureError"));
+                                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.UploadTextureError"));
                                     return;
                                 }
 
                                 String value = MineSkinApi[1];
                                 String signature = MineSkinApi[2];
 
-                                commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.UploadTextureSuccess"));
+                                commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + GetConfig.str("message.UploadTextureSuccess"));
 
 
                                 UseBlessingSkin.skinStorage.setCustomSkinData(" " + commandSender.getName(), SkinProperty.of(value, signature));
@@ -162,14 +162,14 @@ final public class BukkitCommand implements TabExecutor {
                                 Optional<InputDataResult> result = UseBlessingSkin.skinStorage.findOrCreateSkinData(" " + commandSender.getName());
 
                                 if (!result.isPresent()) {
-                                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.UnknownError"));
+                                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.UnknownError"));
                                     return;
                                 }
 
                                 Player player = UseBlessingSkin.plugin.getServer().getPlayer(commandSender.getName());
 
                                 if (player == null) {
-                                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.UnknownError"));
+                                    commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.UnknownError"));
                                     return;
                                 }
 
@@ -177,10 +177,10 @@ final public class BukkitCommand implements TabExecutor {
 
                                 skinsRestorerAPI.getSkinApplier(Player.class).applySkin(player);
 
-                                commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.SetSkinSuccess"));
+                                commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + GetConfig.str("message.SetSkinSuccess"));
 
                             } catch (Exception e) {
-                                commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.UnknownError"));
+                                commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.UnknownError"));
                                 e.printStackTrace();
                             }
                         }
@@ -188,7 +188,7 @@ final public class BukkitCommand implements TabExecutor {
                 }
                 return true;
             }
-            commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.NoCommand"));
+            commandSender.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.NoCommand"));
         }
         return true;
     }

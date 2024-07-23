@@ -1,6 +1,6 @@
-package com.github.hank9999.useblessingskin.bungee.Commands;
+package com.github.hank9999.useblessingskin.bungee.commands;
 
-import com.github.hank9999.useblessingskin.bungee.Libs.getConfig;
+import com.github.hank9999.useblessingskin.bungee.libs.GetConfig;
 import com.github.hank9999.useblessingskin.bungee.UseBlessingSkin;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
@@ -19,7 +19,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.github.hank9999.useblessingskin.bungee.UseBlessingSkin.*;
-import static com.github.hank9999.useblessingskin.shared.utils.*;
+import static com.github.hank9999.useblessingskin.shared.Utils.*;
 
 
 public class BungeeCommand extends Command implements TabExecutor {
@@ -39,12 +39,12 @@ public class BungeeCommand extends Command implements TabExecutor {
             return;
         }
         if (strings[0].equalsIgnoreCase("help")) {
-            commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + "/bskin set <ID> " + getConfig.str("message.SetSkin")));
-            commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + getConfig.str("message.AboutIdInfo")));
-            commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_AQUA + getConfig.str("message.Support")));
+            commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + "/bskin set <ID> " + GetConfig.str("message.SetSkin")));
+            commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + GetConfig.str("message.AboutIdInfo")));
+            commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_AQUA + GetConfig.str("message.Support")));
 
-            TextComponent skinWebSiteLink = new TextComponent(ChatColor.DARK_AQUA + getConfig.str("name") + " " + getConfig.str("url"));
-            skinWebSiteLink.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, getConfig.str("url")));
+            TextComponent skinWebSiteLink = new TextComponent(ChatColor.DARK_AQUA + GetConfig.str("name") + " " + GetConfig.str("url"));
+            skinWebSiteLink.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, GetConfig.str("url")));
 
             commandSender.sendMessage(skinWebSiteLink);
 
@@ -56,11 +56,11 @@ public class BungeeCommand extends Command implements TabExecutor {
         }
         if (strings[0].equalsIgnoreCase("reload")) {
             if (!commandSender.hasPermission("UseBlessingSkin.admin")) {
-                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.DoNotHavePermission")));
+                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.DoNotHavePermission")));
                 return;
             }
-            if (getConfig.reload()) {
-                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.ReloadSuccess")));
+            if (GetConfig.reload()) {
+                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + GetConfig.str("message.ReloadSuccess")));
             } else {
                 commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + "Can't Load Config"));
             }
@@ -68,12 +68,12 @@ public class BungeeCommand extends Command implements TabExecutor {
         }
         if (strings[0].equalsIgnoreCase("set")) {
             if (strings.length == 1) {
-                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + "/bskin set <ID> " + getConfig.str("message.SetSkin")));
-                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + getConfig.str("message.AboutIdInfo")));
-                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_AQUA + getConfig.str("message.Support")));
+                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + "/bskin set <ID> " + GetConfig.str("message.SetSkin")));
+                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.WHITE + GetConfig.str("message.AboutIdInfo")));
+                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_AQUA + GetConfig.str("message.Support")));
 
-                TextComponent skinWebSiteLink = new TextComponent(ChatColor.DARK_AQUA + getConfig.str("name") + " " + getConfig.str("url"));
-                skinWebSiteLink.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, getConfig.str("url")));
+                TextComponent skinWebSiteLink = new TextComponent(ChatColor.DARK_AQUA + GetConfig.str("name") + " " + GetConfig.str("url"));
+                skinWebSiteLink.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, GetConfig.str("url")));
 
                 commandSender.sendMessage(skinWebSiteLink);
 
@@ -85,7 +85,7 @@ public class BungeeCommand extends Command implements TabExecutor {
                             try {
 
                                 String[] textureIdData = getTextureId(
-                                        getConfig.str("csl").replaceAll("%name%", URLEncoder.encode(strings[1], "UTF-8"))
+                                        GetConfig.str("csl").replaceAll("%name%", URLEncoder.encode(strings[1], "UTF-8"))
                                 );
 
                                 String isSlim;
@@ -100,76 +100,76 @@ public class BungeeCommand extends Command implements TabExecutor {
                                 }
 
                                 if (textureId == null) {
-                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.RequestError")));
+                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.RequestError")));
                                     return;
                                 } else if (textureId.equals("Role does not exist")) {
-                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.RoleNotExist")));
+                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.RoleNotExist")));
                                     return;
                                 } else if (textureId.equals("Role response is empty")) {
-                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.RoleResponseEmpty")));
+                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.RoleResponseEmpty")));
                                     return;
                                 } else if (textureId.equals("Role does not have skin")) {
-                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.RoleSkinNotExist")));
-                                    if (getConfig.bool("cdn")) {
-                                        commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.IfCdnMakeRoleSkinNotExist")));
+                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.RoleSkinNotExist")));
+                                    if (GetConfig.bool("cdn")) {
+                                        commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.IfCdnMakeRoleSkinNotExist")));
                                     }
                                     return;
                                 }
 
-                                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.TextureIdGetSuccess") + " " + textureId));
+                                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + GetConfig.str("message.TextureIdGetSuccess") + " " + textureId));
 
                                 String picName;
 
-                                if (getConfig.bool("cache")) {
+                                if (GetConfig.bool("cache")) {
                                     picName = textureId + ".png";
                                     if (!checkCache(basePath + File.separator + "Cache" + File.separator + picName)) {
                                         if (!savePic(
-                                                getConfig.str("texture").replaceAll("%textureId%", textureId),
+                                                GetConfig.str("texture").replaceAll("%textureId%", textureId),
                                                 basePath + File.separator + "Cache" + File.separator,
                                                 picName)
                                         ) {
-                                            commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.SaveTextureError")));
+                                            commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.SaveTextureError")));
                                             return;
                                         }
 
-                                        commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.SaveTextureSuccess")));
+                                        commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + GetConfig.str("message.SaveTextureSuccess")));
                                     }
                                 } else {
                                     picName = UUID.randomUUID() + ".png";
                                     if (!savePic(
-                                            getConfig.str("texture").replaceAll("%textureId%", textureId),
+                                            GetConfig.str("texture").replaceAll("%textureId%", textureId),
                                             basePath + File.separator + "Cache" + File.separator,
                                             picName)
                                     ) {
-                                        commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.SaveTextureError")));
+                                        commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.SaveTextureError")));
                                         return;
                                     }
 
-                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.SaveTextureSuccess")));
+                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + GetConfig.str("message.SaveTextureSuccess")));
                                 }
 
-                                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_PURPLE + getConfig.str("message.UploadingTexture")));
+                                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_PURPLE + GetConfig.str("message.UploadingTexture")));
 
                                 String[] MineSkinApi = MineSkinApi(
-                                        getConfig.str("mineskinapi"),
+                                        GetConfig.str("mineskinapi"),
                                         picName,
                                         basePath + File.separator + "Cache" + File.separator + picName,
                                         isSlim
                                 );
 
                                 if (MineSkinApi == null) {
-                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.UploadTextureError")));
+                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.UploadTextureError")));
                                     return;
                                 }
                                 if (!(MineSkinApi[0].equals("OK"))) {
-                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.UploadTextureError")));
+                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.UploadTextureError")));
                                     return;
                                 }
 
                                 String value = MineSkinApi[1];
                                 String signature = MineSkinApi[2];
 
-                                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.UploadTextureSuccess")));
+                                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + GetConfig.str("message.UploadTextureSuccess")));
 
 
                                 skinStorage.setCustomSkinData(" " + commandSender.getName(), SkinProperty.of(value, signature));
@@ -177,7 +177,7 @@ public class BungeeCommand extends Command implements TabExecutor {
                                 Optional<InputDataResult> result = skinStorage.findOrCreateSkinData(" " + commandSender.getName());
 
                                 if (!result.isPresent()) {
-                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + getConfig.str("message.UnknownError")));
+                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + GetConfig.str("message.UnknownError")));
                                     return;
                                 }
 
@@ -186,17 +186,17 @@ public class BungeeCommand extends Command implements TabExecutor {
 
                                 skinsRestorerAPI.getSkinApplier(ProxiedPlayer.class).applySkin(player);
 
-                                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + getConfig.str("message.SetSkinSuccess")));
+                                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + GetConfig.str("message.SetSkinSuccess")));
 
                             } catch (Exception e) {
-                                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + getConfig.str("message.UnknownError")));
+                                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + GetConfig.str("message.UnknownError")));
                                 e.printStackTrace();
                             }
                         }));
                 return;
             }
         }
-        commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + getConfig.str("message.NoCommand")));
+        commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.NoCommand")));
     }
 
 

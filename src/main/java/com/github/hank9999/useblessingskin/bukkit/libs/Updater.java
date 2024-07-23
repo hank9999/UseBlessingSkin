@@ -1,7 +1,7 @@
-package com.github.hank9999.useblessingskin.bukkit.Update;
+package com.github.hank9999.useblessingskin.bukkit.libs;
 
 import com.github.hank9999.useblessingskin.bukkit.UseBlessingSkin;
-import com.github.hank9999.useblessingskin.shared.httpMethods;
+import com.github.hank9999.useblessingskin.shared.HttpMethods;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -33,7 +33,7 @@ final public class Updater {
     private void checkUpdate() {
         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
             try {
-                String Response = httpMethods.getUrl("https://hank9999.github.io/UseBlessingSkin/version.txt");
+                String Response = HttpMethods.getUrl("https://hank9999.github.io/UseBlessingSkin/version.txt");
                 if (Response == null) {
                     throw new Exception("Response Empty");
                 }
