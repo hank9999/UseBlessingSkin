@@ -68,12 +68,11 @@ public class BungeeCommand extends Command implements TabExecutor {
                 return;
 
             } else {
-                UseBlessingSkin.instance.getProxy().getScheduler().runAsync(UseBlessingSkin.instance,
-                        (() -> {
-                            if (commandSender instanceof ProxiedPlayer) {
-                                SkinSetter.setSkin(strings[1], (ProxiedPlayer) commandSender);
-                            }
-                        }));
+                UseBlessingSkin.instance.getProxy().getScheduler().runAsync(UseBlessingSkin.instance, (() -> {
+                    if (commandSender instanceof ProxiedPlayer) {
+                        SkinSetter.setSkin(strings[1], (ProxiedPlayer) commandSender);
+                    }
+                }));
                 return;
             }
         }
