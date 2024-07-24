@@ -8,6 +8,8 @@ mineskinapi: 'https://api.mineskin.org/generate/upload'
 cdn: false
 cache: false
 update: true
+loginAutoSetSkin: false
+loginAutoSetSkinMojangFirst: true
 
 message:
   Support: '目前支持以下皮肤站'

@@ -5,8 +5,10 @@ import com.github.hank9999.useblessingskin.bukkit.libs.GetConfig;
 
 import com.github.hank9999.useblessingskin.bukkit.libs.MetricsLite;
 import com.github.hank9999.useblessingskin.bukkit.libs.Updater;
+import com.github.hank9999.useblessingskin.bukkit.listeners.PlayerJoinListener;
 import net.skinsrestorer.api.SkinsRestorer;
 import net.skinsrestorer.api.SkinsRestorerProvider;
+import net.skinsrestorer.api.connections.MojangAPI;
 import net.skinsrestorer.api.storage.PlayerStorage;
 import net.skinsrestorer.api.storage.SkinStorage;
 import org.bukkit.ChatColor;
@@ -20,6 +22,7 @@ public final class UseBlessingSkin extends JavaPlugin {
     public static SkinsRestorer skinsRestorerAPI;
     public static SkinStorage skinStorage;
     public static PlayerStorage playerStorage;
+    public static MojangAPI mojangAPI;
 
     @Override
     public void onLoad() {
@@ -32,6 +35,7 @@ public final class UseBlessingSkin extends JavaPlugin {
         skinsRestorerAPI = SkinsRestorerProvider.get();
         skinStorage = skinsRestorerAPI.getSkinStorage();
         playerStorage = skinsRestorerAPI.getPlayerStorage();
+        mojangAPI = skinsRestorerAPI.getMojangAPI();
         if (!getDataFolder().exists()) {
             getDataFolder().mkdir();
         }
@@ -52,6 +56,8 @@ public final class UseBlessingSkin extends JavaPlugin {
             }
         }
 
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
+
         Objects.requireNonNull(getServer().getPluginCommand("bskin")).setExecutor(new BukkitCommand());
         Objects.requireNonNull(getServer().getPluginCommand("bskin")).setTabCompleter(new BukkitCommand());
 
@@ -65,6 +71,7 @@ public final class UseBlessingSkin extends JavaPlugin {
         skinsRestorerAPI = null;
         skinStorage = null;
         playerStorage = null;
+        mojangAPI = null;
         getLogger().info(ChatColor.BLUE + "UseBlessingSkin插件已禁用");
     }
 }

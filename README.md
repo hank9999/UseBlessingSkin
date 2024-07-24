@@ -51,6 +51,15 @@
  - cache
    - 材质是否缓存
  
+ - update
+   - 是否启用更新检查
+
+ - loginAutoSetSkin
+   - 是否启用登录自动设置皮肤
+
+ - loginAutoSetSkinMojangFirst
+   - 登录自动设置皮肤是否优先使用 Mojang 的皮肤
+
  - message
    - 插件文本
    - Support: 输出帮助时显示 用于引出支持的皮肤站
