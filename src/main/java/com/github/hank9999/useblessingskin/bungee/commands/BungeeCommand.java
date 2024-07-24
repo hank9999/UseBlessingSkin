@@ -2,6 +2,7 @@ package com.github.hank9999.useblessingskin.bungee.commands;
 
 import com.github.hank9999.useblessingskin.bungee.libs.GetConfig;
 import com.github.hank9999.useblessingskin.bungee.UseBlessingSkin;
+import com.github.hank9999.useblessingskin.bungee.libs.SkinSetter;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -9,23 +10,10 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
-import net.skinsrestorer.api.property.InputDataResult;
-import net.skinsrestorer.api.property.SkinProperty;
-
-import java.io.File;
-import java.net.URLEncoder;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.github.hank9999.useblessingskin.bungee.UseBlessingSkin.*;
-import static com.github.hank9999.useblessingskin.shared.Utils.*;
-
-
 public class BungeeCommand extends Command implements TabExecutor {
-
-    private final String basePath = UseBlessingSkin.instance.getDataFolder().toString();
-
 
     public BungeeCommand(String name) {
         super(name);
@@ -82,115 +70,8 @@ public class BungeeCommand extends Command implements TabExecutor {
             } else {
                 UseBlessingSkin.instance.getProxy().getScheduler().runAsync(UseBlessingSkin.instance,
                         (() -> {
-                            try {
-
-                                String[] textureIdData = getTextureId(
-                                        GetConfig.str("csl").replaceAll("%name%", URLEncoder.encode(strings[1], "UTF-8"))
-                                );
-
-                                String isSlim;
-                                String textureId;
-
-                                if (textureIdData == null) {
-                                    isSlim = "false";
-                                    textureId = null;
-                                } else {
-                                    isSlim = textureIdData[0];
-                                    textureId = textureIdData[1];
-                                }
-
-                                if (textureId == null) {
-                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.RequestError")));
-                                    return;
-                                } else if (textureId.equals("Role does not exist")) {
-                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.RoleNotExist")));
-                                    return;
-                                } else if (textureId.equals("Role response is empty")) {
-                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.RoleResponseEmpty")));
-                                    return;
-                                } else if (textureId.equals("Role does not have skin")) {
-                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.RoleSkinNotExist")));
-                                    if (GetConfig.bool("cdn")) {
-                                        commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.IfCdnMakeRoleSkinNotExist")));
-                                    }
-                                    return;
-                                }
-
-                                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + GetConfig.str("message.TextureIdGetSuccess") + " " + textureId));
-
-                                String picName;
-
-                                if (GetConfig.bool("cache")) {
-                                    picName = textureId + ".png";
-                                    if (!checkCache(basePath + File.separator + "Cache" + File.separator + picName)) {
-                                        if (!savePic(
-                                                GetConfig.str("texture").replaceAll("%textureId%", textureId),
-                                                basePath + File.separator + "Cache" + File.separator,
-                                                picName)
-                                        ) {
-                                            commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.SaveTextureError")));
-                                            return;
-                                        }
-
-                                        commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + GetConfig.str("message.SaveTextureSuccess")));
-                                    }
-                                } else {
-                                    picName = UUID.randomUUID() + ".png";
-                                    if (!savePic(
-                                            GetConfig.str("texture").replaceAll("%textureId%", textureId),
-                                            basePath + File.separator + "Cache" + File.separator,
-                                            picName)
-                                    ) {
-                                        commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.SaveTextureError")));
-                                        return;
-                                    }
-
-                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + GetConfig.str("message.SaveTextureSuccess")));
-                                }
-
-                                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_PURPLE + GetConfig.str("message.UploadingTexture")));
-
-                                String[] MineSkinApi = MineSkinApi(
-                                        GetConfig.str("mineskinapi"),
-                                        picName,
-                                        basePath + File.separator + "Cache" + File.separator + picName,
-                                        isSlim
-                                );
-
-                                if (MineSkinApi == null) {
-                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.UploadTextureError")));
-                                    return;
-                                }
-                                if (!(MineSkinApi[0].equals("OK"))) {
-                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.UploadTextureError")));
-                                    return;
-                                }
-
-                                String value = MineSkinApi[1];
-                                String signature = MineSkinApi[2];
-
-                                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + GetConfig.str("message.UploadTextureSuccess")));
-
-
-                                skinStorage.setCustomSkinData(" " + commandSender.getName(), SkinProperty.of(value, signature));
-
-                                Optional<InputDataResult> result = skinStorage.findOrCreateSkinData(" " + commandSender.getName());
-
-                                if (!result.isPresent()) {
-                                    commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + GetConfig.str("message.UnknownError")));
-                                    return;
-                                }
-
-                                ProxiedPlayer player = instance.getProxy().getPlayer(commandSender.getName());
-                                playerStorage.setSkinIdOfPlayer(player.getUniqueId(), result.get().getIdentifier());
-
-                                skinsRestorerAPI.getSkinApplier(ProxiedPlayer.class).applySkin(player);
-
-                                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + GetConfig.str("message.SetSkinSuccess")));
-
-                            } catch (Exception e) {
-                                commandSender.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + GetConfig.str("message.UnknownError")));
-                                e.printStackTrace();
+                            if (commandSender instanceof ProxiedPlayer) {
+                                SkinSetter.setSkin(strings[1], (ProxiedPlayer) commandSender);
                             }
                         }));
                 return;
