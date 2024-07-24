@@ -69,7 +69,7 @@ public class ConfigManager {
     }
 
     public boolean checkPath(String path) {
-        return configuration.node((Object[]) path.split("\\.")).isNull();
+        return !configuration.node((Object[]) path.split("\\.")).isNull();
     }
 
     public boolean reloadConfig() {
