@@ -119,17 +119,15 @@ public class SkinSetter {
             }
 
             // 防止应用时玩家不在线
-            Player player2 = UseBlessingSkin.plugin.getServer().getPlayer(player.getName());
-
-            if (player2 == null) {
+            if (UseBlessingSkin.plugin.getServer().getPlayer(player.getName()) == null) {
                 return false;
             }
 
-            UseBlessingSkin.playerStorage.setSkinIdOfPlayer(player2.getUniqueId(), result.get().getIdentifier());
+            UseBlessingSkin.playerStorage.setSkinIdOfPlayer(player.getUniqueId(), result.get().getIdentifier());
 
-            skinsRestorerAPI.getSkinApplier(Player.class).applySkin(player2);
+            skinsRestorerAPI.getSkinApplier(Player.class).applySkin(player);
 
-            player2.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + GetConfig.str("message.SetSkinSuccess"));
+            player.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + GetConfig.str("message.SetSkinSuccess"));
             return true;
 
         } catch (Exception e) {

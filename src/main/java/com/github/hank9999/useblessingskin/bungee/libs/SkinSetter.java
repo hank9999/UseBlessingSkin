@@ -119,12 +119,15 @@ public class SkinSetter {
             }
 
             // 确保玩家在线
-            ProxiedPlayer player2 = instance.getProxy().getPlayer(player.getName());
-            playerStorage.setSkinIdOfPlayer(player2.getUniqueId(), result.get().getIdentifier());
+            if (instance.getProxy().getPlayer(player.getName()) == null) {
+                return false;
+            }
 
-            skinsRestorerAPI.getSkinApplier(ProxiedPlayer.class).applySkin(player2);
+            playerStorage.setSkinIdOfPlayer(player.getUniqueId(), result.get().getIdentifier());
 
-            player2.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + GetConfig.str("message.SetSkinSuccess")));
+            skinsRestorerAPI.getSkinApplier(ProxiedPlayer.class).applySkin(player);
+
+            player.sendMessage(new TextComponent(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + GetConfig.str("message.SetSkinSuccess")));
             return true;
 
         } catch (Exception e) {
