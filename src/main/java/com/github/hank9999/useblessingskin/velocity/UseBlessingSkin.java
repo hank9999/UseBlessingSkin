@@ -4,6 +4,7 @@ import com.github.hank9999.useblessingskin.velocity.commands.VelocityCommand;
 import com.github.hank9999.useblessingskin.velocity.libs.ConfigManager;
 import com.github.hank9999.useblessingskin.velocity.libs.Metrics;
 import com.github.hank9999.useblessingskin.velocity.libs.Updater;
+import com.github.hank9999.useblessingskin.velocity.listeners.PlayerJoinListener;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
@@ -18,7 +19,7 @@ import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.skinsrestorer.api.SkinsRestorer;
 import net.skinsrestorer.api.SkinsRestorerProvider;
 import java.nio.file.Path;
-@Plugin(id = "useblessingskin", name = "UseBlessingSkin", version = "1.2.0",
+@Plugin(id = "useblessingskin", name = "UseBlessingSkin", version = "1.3.2",
         url = "https://github.com/hank9999/UseBlessingSkin",
         description = "Let SkinsRestorer use Blessing Skin Server's / CSL API's skins",
         authors = {"hank9999"},
@@ -59,7 +60,7 @@ public class UseBlessingSkin {
                 new Updater(server, plugin, componentLogger);
             }
         }
-
+        server.getEventManager().register(plugin, new PlayerJoinListener(server, plugin, configManager, componentLogger, dataFolder, skinsRestorerAPI));
         server.getCommandManager().register("bskin", new VelocityCommand(server, plugin, configManager, componentLogger, dataFolder, skinsRestorerAPI));
         componentLogger.info(Component.text("UseBlessingSkin Enable").color(NamedTextColor.BLUE));
     }
