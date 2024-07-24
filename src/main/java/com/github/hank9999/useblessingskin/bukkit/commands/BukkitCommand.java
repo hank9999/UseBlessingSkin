@@ -60,7 +60,9 @@ final public class BukkitCommand implements TabExecutor {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            SkinSetter.setSkin(strings[1], (Player) commandSender);
+                            if (commandSender instanceof Player) {
+                                SkinSetter.setSkin(strings[1], (Player) commandSender);
+                            }
                         }
                     }.runTaskAsynchronously(UseBlessingSkin.plugin);
                 }
