@@ -21,7 +21,7 @@ final public class Utils {
             String isSlim = TextureIdParseData[0];
             String textureId = TextureIdParseData[1];
             if (textureId == null) {
-                return new String[] {"Role does not have skin"};
+                return new String[] {"false", "Role does not have skin"};
             }
             return new String[] {isSlim, textureId};
         } catch (Exception e) {
