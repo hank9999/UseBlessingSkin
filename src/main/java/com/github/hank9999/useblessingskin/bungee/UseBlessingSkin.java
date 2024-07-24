@@ -3,6 +3,7 @@ package com.github.hank9999.useblessingskin.bungee;
 import com.github.hank9999.useblessingskin.bungee.libs.GetConfig;
 import com.github.hank9999.useblessingskin.bungee.libs.Updater;
 import com.github.hank9999.useblessingskin.bungee.libs.MetricsLite;
+import com.github.hank9999.useblessingskin.bungee.listeners.ServerConnectListener;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.plugin.Plugin;
 
@@ -12,6 +13,7 @@ import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 import net.skinsrestorer.api.SkinsRestorer;
 import net.skinsrestorer.api.SkinsRestorerProvider;
+import net.skinsrestorer.api.connections.MojangAPI;
 import net.skinsrestorer.api.storage.PlayerStorage;
 import net.skinsrestorer.api.storage.SkinStorage;
 
@@ -26,6 +28,7 @@ public final class UseBlessingSkin extends Plugin {
     public static SkinsRestorer skinsRestorerAPI;
     public static SkinStorage skinStorage;
     public static PlayerStorage playerStorage;
+    public static MojangAPI mojangAPI;
 
     @Override
     public void onLoad() {
@@ -39,6 +42,7 @@ public final class UseBlessingSkin extends Plugin {
         skinsRestorerAPI = SkinsRestorerProvider.get();
         skinStorage = skinsRestorerAPI.getSkinStorage();
         playerStorage = skinsRestorerAPI.getPlayerStorage();
+        mojangAPI = skinsRestorerAPI.getMojangAPI();
 
         if (!getDataFolder().exists()) {
             getDataFolder().mkdir();
@@ -59,6 +63,8 @@ public final class UseBlessingSkin extends Plugin {
         } catch (IOException e) {
             throw new RuntimeException("Can't Load Config", e);
         }
+
+        getProxy().getPluginManager().registerListener(this, new ServerConnectListener());
 
         getProxy().getPluginManager().registerCommand(this, new BungeeCommand("bskin"));
 
@@ -85,6 +91,7 @@ public final class UseBlessingSkin extends Plugin {
         skinsRestorerAPI = null;
         skinStorage = null;
         playerStorage = null;
+        mojangAPI = null;
         getLogger().info(ChatColor.BLUE + "UseBlessingSkin Disable");
     }
 
