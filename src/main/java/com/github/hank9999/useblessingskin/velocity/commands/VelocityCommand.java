@@ -1,6 +1,7 @@
 package com.github.hank9999.useblessingskin.velocity.commands;
 
 import com.github.hank9999.useblessingskin.velocity.libs.ConfigManager;
+import com.github.hank9999.useblessingskin.velocity.libs.SkinSetter;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.command.SimpleCommand;
 import com.velocitypowered.api.plugin.PluginContainer;
@@ -12,22 +13,13 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.skinsrestorer.api.SkinsRestorer;
-import net.skinsrestorer.api.exception.DataRequestException;
-import net.skinsrestorer.api.exception.MineSkinException;
-import net.skinsrestorer.api.property.InputDataResult;
-import net.skinsrestorer.api.property.SkinProperty;
 import net.skinsrestorer.api.storage.PlayerStorage;
 import net.skinsrestorer.api.storage.SkinStorage;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
-
-import static com.github.hank9999.useblessingskin.shared.Utils.*;
 
 public final class VelocityCommand implements SimpleCommand {
     private final ProxyServer server;
@@ -123,152 +115,9 @@ public final class VelocityCommand implements SimpleCommand {
                         .append(Component.text("/bskin help", NamedTextColor.DARK_PURPLE)));
                 return;
             }
-            String[] textureIdData;
-            try {
-                textureIdData = getTextureId(
-                        configManager.str("csl").replaceAll("%name%", URLEncoder.encode(args[1], "UTF-8"))
-                );
-            } catch (UnsupportedEncodingException e) {
-                componentLogger.error("An error occurred while encoding url!");
-                componentLogger.error(e.getLocalizedMessage());
-                componentLogger.error(Arrays.toString(e.getStackTrace()));
-                return;
-            }
-            String isSlim;
-            String textureId;
 
-            if (textureIdData == null) {
-                isSlim = "false";
-                textureId = null;
-            } else {
-                isSlim = textureIdData[0];
-                textureId = textureIdData[1];
-            }
-            if (textureId == null) {
-                source.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
-                        .append(Component.text(configManager.str("message.RequestError"), NamedTextColor.RED)));
-                return;
-            } else if (textureId.equals("Role does not exist")) {
-                source.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
-                        .append(Component.text(configManager.str("message.RoleNotExist"), NamedTextColor.RED)));
-                return;
-            } else if (textureId.equals("Role response is empty")) {
-                source.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
-                        .append(Component.text(configManager.str("message.RoleResponseEmpty"), NamedTextColor.RED)));
-                return;
-            } else if (textureId.equals("Role does not have skin")) {
-                source.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
-                        .append(Component.text(configManager.str("message.RoleSkinNotExist"), NamedTextColor.RED)));
-                if (configManager.bool("cdn")) {
-                    source.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
-                            .append(Component.text(configManager.str("message.IfCdnMakeRoleSkinNotExist"), NamedTextColor.RED)));
-                }
-                return;
-            }
-
-            source.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
-                    .append(Component.text(configManager.str("message.TextureIdGetSuccess") + " " + textureId, NamedTextColor.BLUE))
-            );
-
-            String picName;
-
-            if (configManager.bool("cache")) {
-                picName = textureId + ".png";
-                if (!checkCache(dataFolder + File.separator + "Cache" + File.separator + picName)) {
-                    if (!savePic(
-                            configManager.str("texture").replaceAll("%textureId%", textureId),
-                            dataFolder + File.separator + "Cache" + File.separator,
-                            picName)
-                    ) {
-                        source.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
-                                .append(Component.text(configManager.str("message.SaveTextureError"), NamedTextColor.RED))
-                        );
-                        return;
-                    }
-
-                    source.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
-                            .append(Component.text(configManager.str("message.SaveTextureSuccess"), NamedTextColor.BLUE))
-                    );
-                }
-            } else {
-                picName = UUID.randomUUID() + ".png";
-                if (!savePic(
-                        configManager.str("texture").replaceAll("%textureId%", textureId),
-                        dataFolder + File.separator + "Cache" + File.separator,
-                        picName)
-                ) {
-                    source.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
-                            .append(Component.text(configManager.str("message.SaveTextureError"), NamedTextColor.RED))
-                    );
-                    return;
-                }
-
-                source.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
-                        .append(Component.text(configManager.str("message.SaveTextureSuccess"), NamedTextColor.BLUE))
-                );
-            }
-
-            source.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
-                    .append(Component.text(configManager.str("message.UploadingTexture"), NamedTextColor.DARK_PURPLE))
-            );
-
-            String[] MineSkinApi = MineSkinApi(
-                    configManager.str("mineskinapi"),
-                    picName,
-                    dataFolder + File.separator + "Cache" + File.separator + picName,
-                    isSlim
-            );
-            if (MineSkinApi == null) {
-                source.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
-                        .append(Component.text(configManager.str("message.UploadTextureError"), NamedTextColor.RED))
-                );
-                return;
-            }
-            if (!(MineSkinApi[0].equals("OK"))) {
-                source.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
-                        .append(Component.text(configManager.str("message.UploadTextureError"), NamedTextColor.RED))
-                );
-                return;
-            }
-
-            String value = MineSkinApi[1];
-            String signature = MineSkinApi[2];
-
-            source.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
-                    .append(Component.text(configManager.str("message.UploadTextureSuccess"), NamedTextColor.BLUE)));
-
-            Player player = (Player) source;
-
-            skinStorage.setCustomSkinData(" " + player.getUsername(), SkinProperty.of(value, signature));
-
-            Optional<InputDataResult> result = Optional.empty();
-            try {
-                result = skinStorage.findOrCreateSkinData(" " + player.getUsername());
-            } catch (DataRequestException | MineSkinException e) {
-                componentLogger.error("An error occurred while dealing with skin data with SkinsRestorer!");
-                componentLogger.error(e.getLocalizedMessage());
-                componentLogger.error(Arrays.toString(e.getStackTrace()));
-            }
-
-            if (!result.isPresent()) {
-                source.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
-                        .append(Component.text(configManager.str("message.UnknownError"), NamedTextColor.RED)));
-                return;
-            }
-
-            playerStorage.setSkinIdOfPlayer(player.getUniqueId(), result.get().getIdentifier());
-
-            try {
-                skinsRestorerAPI.getSkinApplier(Player.class).applySkin(player);
-            } catch (DataRequestException e) {
-                componentLogger.error("An error occurred while applying skin!");
-                componentLogger.error(e.getLocalizedMessage());
-                componentLogger.error(Arrays.toString(e.getStackTrace()));
-            }
-
-            source.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
-                    .append(Component.text(configManager.str("message.SetSkinSuccess"), NamedTextColor.BLUE))
-            );
+            SkinSetter.setSkin(args[1], server, (Player) source, configManager, componentLogger, dataFolder,
+                    skinsRestorerAPI, skinStorage, playerStorage);
 
             return;
         }
