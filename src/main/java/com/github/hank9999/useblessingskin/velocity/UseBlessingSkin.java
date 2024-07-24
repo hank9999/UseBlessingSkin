@@ -19,7 +19,7 @@ import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.skinsrestorer.api.SkinsRestorer;
 import net.skinsrestorer.api.SkinsRestorerProvider;
 import java.nio.file.Path;
-@Plugin(id = "useblessingskin", name = "UseBlessingSkin", version = "1.3.2",
+@Plugin(id = "useblessingskin", name = "UseBlessingSkin", version = "1.4.0",
         url = "https://github.com/hank9999/UseBlessingSkin",
         description = "Let SkinsRestorer use Blessing Skin Server's / CSL API's skins",
         authors = {"hank9999"},
