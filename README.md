@@ -18,7 +18,10 @@
  - /bskin set 设置皮肤
  - /bskin help 帮助
  - /bskin reload 重载插件 (需要管理员权限)
-
+  
+## TODO
+ - 增加本地已上传皮肤的缓存 [x]
+  
 ## 配置文件
  - csl
    - 获取角色信息链接
