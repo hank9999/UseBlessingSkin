@@ -59,7 +59,7 @@ final public class HttpMethods {
         // 构建请求体
         MultipartBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("file", picName, RequestBody.create(filePath, mediaType))
+                .addFormDataPart("file", picName, RequestBody.create(mediaType, filePath))
                 .build();
 
         // 构建请求
