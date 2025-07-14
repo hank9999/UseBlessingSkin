@@ -76,13 +76,13 @@ final public class Utils {
             return false;
         }
 
+        return checkImgValid(img);
+    }
+
+    public static Boolean checkImgValid(BufferedImage img) {
         int skinWidth = img.getWidth();
         int skinHeight = img.getHeight();
 
-        if (!((skinWidth == 64 && skinHeight == 64) || (skinWidth == 64 && skinHeight == 32))) {
-            return false;
-        }
-
-        return true;
+        return (skinWidth == 64 && skinHeight == 64) || (skinWidth == 64 && skinHeight == 32);
     }
 }

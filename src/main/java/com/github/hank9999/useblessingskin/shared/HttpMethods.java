@@ -51,10 +51,9 @@ final public class HttpMethods {
         URL url = new URL(urlHttp);
         BufferedImage img = ImageIO.read(url);
 
-        int skinWidth = img.getWidth();
-        int skinHeight = img.getHeight();
-        if (!((skinWidth == 64 && skinHeight == 64) || (skinWidth == 64 && skinHeight == 32))) {
-            return false;
+        Boolean imgValid = Utils.checkImgValid(img);
+        if (!imgValid) {
+            return false;  // 图片无效
         }
 
         // 保存并返回Boolean
