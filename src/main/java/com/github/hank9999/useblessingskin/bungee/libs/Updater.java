@@ -21,7 +21,7 @@ final public class Updater {
     private void checkUpdate() {
         this.plugin.getProxy().getScheduler().runAsync(this.plugin, () -> {
             try {
-                String Response = HttpMethods.getUrl("https://hank9999.github.io/UseBlessingSkin/version.txt");
+                String Response = HttpMethods.getString("https://hank9999.github.io/UseBlessingSkin/version.txt");
                 if (Response == null) {
                     throw new Exception("Response Empty");
                 }

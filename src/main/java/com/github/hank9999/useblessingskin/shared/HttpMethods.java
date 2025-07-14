@@ -14,7 +14,7 @@ import java.nio.file.Paths;
 final public class HttpMethods {
     private static final OkHttpClient client = new OkHttpClient();
 
-    public static String getUrl(String url) throws Exception {
+    public static ResponseBody get(String url) throws Exception {
         Request request = new Request.Builder()
                 .url(url)
                 .header("User-Agent", "UseBlessingSkinPlugin/1.0")
@@ -29,8 +29,13 @@ final public class HttpMethods {
                 throw new IOException("HTTP error code: " + response.code() + " | " + response.message());
             }
 
-            return response.body() != null ? response.body().string() : null;
+            return response.body();
         }
+    }
+
+    public static String getString(String url) throws Exception {
+        ResponseBody body = get(url);
+        return body != null ? body.string() : null;
     }
 
     public static boolean getPicture(String urlHttp, String path, String picName) throws Exception {

@@ -11,7 +11,7 @@ import static com.github.hank9999.useblessingskin.shared.HttpMethods.*;
 final public class Utils {
     public static String[] getTextureId(String url) {
         try {
-            String profile = getUrl(url);
+            String profile = getString(url);
             if (profile == null) {
                 return new String[] {"false", "Role does not exist"};
             } else if (profile.isEmpty() || profile.equals("{}")) {

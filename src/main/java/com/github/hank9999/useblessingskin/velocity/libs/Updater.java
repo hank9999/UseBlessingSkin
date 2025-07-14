@@ -26,7 +26,7 @@ public class Updater {
     private void checkUpdate() {
         CompletableFuture.runAsync(() -> {
             try {
-                String Response = HttpMethods.getUrl("https://hank9999.github.io/UseBlessingSkin/version.txt");
+                String Response = HttpMethods.getString("https://hank9999.github.io/UseBlessingSkin/version.txt");
                 if (Response == null) {
                     throw new Exception("Response Empty");
                 }
