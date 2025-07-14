@@ -72,14 +72,14 @@ final public class Utils {
             e.printStackTrace();
         }
 
-        if (img == null) {
-            return false;
-        }
-
         return checkImgValid(img);
     }
 
     public static Boolean checkImgValid(BufferedImage img) {
+        if (img == null) {
+            return false;
+        }
+
         int skinWidth = img.getWidth();
         int skinHeight = img.getHeight();
 

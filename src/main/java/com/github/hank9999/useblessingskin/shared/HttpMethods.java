@@ -45,19 +45,25 @@ final public class HttpMethods {
         Files.createDirectories(pathDir);
 
         // 文件对象
-        File f1 = new File(path, picName);
+        File picFile = new File(path, picName);
 
         // 读取
-        URL url = new URL(urlHttp);
-        BufferedImage img = ImageIO.read(url);
-
-        Boolean imgValid = Utils.checkImgValid(img);
-        if (!imgValid) {
-            return false;  // 图片无效
+        ResponseBody body = get(urlHttp);
+        if (body == null) {
+            return false;
         }
 
-        // 保存并返回Boolean
-        return ImageIO.write(img, "png", f1);
+        try (InputStream inputStream = body.byteStream()) {
+            BufferedImage img = ImageIO.read(inputStream);
+            Boolean imgValid = Utils.checkImgValid(img);
+
+            if (!imgValid) {
+                return false; // 图片无效
+            }
+
+            // 保存并返回Boolean
+            return ImageIO.write(img, "png", picFile);
+        }
     }
 
     public static String postPic(String urlHttp, String picName, String picPath) throws Exception {
