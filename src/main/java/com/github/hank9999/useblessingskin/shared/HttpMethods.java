@@ -7,6 +7,9 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 final public class HttpMethods {
     private static final OkHttpClient client = new OkHttpClient();
@@ -31,12 +34,13 @@ final public class HttpMethods {
     }
 
     public static boolean getPicture(String urlHttp, String path, String picName) throws Exception {
-        // 文件对象
-        String file = path + picName;
-        File f1 = new File(file);
 
-        // 防止文件夹未建立
-        f1.mkdirs();
+        // 确保文件夹存在
+        Path pathDir = Paths.get(path);
+        Files.createDirectories(pathDir);
+
+        // 文件对象
+        File f1 = new File(path, picName);
 
         // 读取
         URL url = new URL(urlHttp);
