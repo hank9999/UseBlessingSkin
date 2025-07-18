@@ -1,5 +1,9 @@
 package com.github.hank9999.useblessingskin.velocity.libs;
 
+import com.github.hank9999.useblessingskin.shared.ErrorCode;
+import com.github.hank9999.useblessingskin.shared.model.MineSkinData;
+import com.github.hank9999.useblessingskin.shared.model.Result;
+import com.github.hank9999.useblessingskin.shared.model.SkinCSLData;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import net.kyori.adventure.text.Component;
@@ -27,7 +31,7 @@ public class SkinSetter {
     public static boolean setSkin(String username, ProxyServer server, Player player, ConfigManager configManager,
                                   ComponentLogger componentLogger, Path dataFolder, SkinsRestorer skinsRestorerAPI,
                                   SkinStorage skinStorage, PlayerStorage playerStorage) {
-        String[] textureIdData;
+        Result<SkinCSLData> textureIdData;
         try {
             textureIdData = getTextureId(
                     configManager.str("csl").replaceAll("%name%", URLEncoder.encode(username, "UTF-8"))
@@ -38,69 +42,61 @@ public class SkinSetter {
             componentLogger.error(Arrays.toString(e.getStackTrace()));
             return false;
         }
-        String isSlim;
-        String textureId;
 
-        if (textureIdData == null) {
-            isSlim = "false";
-            textureId = null;
-        } else {
-            isSlim = textureIdData[0];
-            textureId = textureIdData[1];
-        }
-        if (textureId == null) {
-            player.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
-                    .append(Component.text(configManager.str("message.RequestError"), NamedTextColor.RED)));
-            return false;
-        } else if (textureId.equals("Role does not exist")) {
-            player.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
-                    .append(Component.text(configManager.str("message.RoleNotExist"), NamedTextColor.RED)));
-            return false;
-        } else if (textureId.equals("Role response is empty")) {
-            player.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
-                    .append(Component.text(configManager.str("message.RoleResponseEmpty"), NamedTextColor.RED)));
-            return false;
-        } else if (textureId.equals("Role does not have skin")) {
-            player.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
-                    .append(Component.text(configManager.str("message.RoleSkinNotExist"), NamedTextColor.RED)));
-            if (configManager.bool("cdn")) {
+        if (!textureIdData.isSuccess()) {
+            if (textureIdData.getErrorCode() == ErrorCode.UNKNOWN_ERROR) {
                 player.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
-                        .append(Component.text(configManager.str("message.IfCdnMakeRoleSkinNotExist"), NamedTextColor.RED)));
+                        .append(Component.text(configManager.str("message.RequestError"), NamedTextColor.RED)));
+                return false;
+            } else if (textureIdData.getErrorCode() == ErrorCode.ROLE_NOT_EXIST) {
+                player.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
+                        .append(Component.text(configManager.str("message.RoleNotExist"), NamedTextColor.RED)));
+                return false;
+            } else if (textureIdData.getErrorCode() == ErrorCode.ROLE_RESPONSE_EMPTY) {
+                player.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
+                        .append(Component.text(configManager.str("message.RoleResponseEmpty"), NamedTextColor.RED)));
+                return false;
+            } else if (textureIdData.getErrorCode() == ErrorCode.ROLE_SKIN_NOT_EXIST) {
+                player.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
+                        .append(Component.text(configManager.str("message.RoleSkinNotExist"), NamedTextColor.RED)));
+                if (configManager.bool("cdn")) {
+                    player.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
+                            .append(Component.text(configManager.str("message.IfCdnMakeRoleSkinNotExist"), NamedTextColor.RED)));
+                }
+                return false;
+            } else {
+                player.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
+                        .append(Component.text(configManager.str("message.RequestError"), NamedTextColor.RED)));
+                return false;
             }
-            return false;
         }
+
+        String textureId = textureIdData.getData().getTextureId();
+        boolean isSlim = textureIdData.getData().isSlim();
 
         player.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
                 .append(Component.text(configManager.str("message.TextureIdGetSuccess") + " " + textureId, NamedTextColor.BLUE))
         );
 
         String picName;
+        boolean needDownload;
 
         if (configManager.bool("cache")) {
             picName = textureId + ".png";
-            if (!checkCache(dataFolder + File.separator + "Cache" + File.separator + picName)) {
-                if (!savePic(
-                        configManager.str("texture").replaceAll("%textureId%", textureId),
-                        dataFolder + File.separator + "Cache" + File.separator,
-                        picName)
-                ) {
-                    player.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
-                            .append(Component.text(configManager.str("message.SaveTextureError"), NamedTextColor.RED))
-                    );
-                    return false;
-                }
-
-                player.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
-                        .append(Component.text(configManager.str("message.SaveTextureSuccess"), NamedTextColor.BLUE))
-                );
-            }
+            needDownload = !checkCache(dataFolder + File.separator + "Cache" + File.separator + picName);
         } else {
             picName = UUID.randomUUID() + ".png";
-            if (!savePic(
+            needDownload = true;
+        }
+
+        if (needDownload) {
+            Result<Boolean> savePicResult = savePic(
                     configManager.str("texture").replaceAll("%textureId%", textureId),
                     dataFolder + File.separator + "Cache" + File.separator,
-                    picName)
-            ) {
+                    picName
+            );
+            boolean savePicSuccess = savePicResult.isSuccess() && savePicResult.getData();
+            if (!savePicSuccess) {
                 player.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
                         .append(Component.text(configManager.str("message.SaveTextureError"), NamedTextColor.RED))
                 );
@@ -116,27 +112,21 @@ public class SkinSetter {
                 .append(Component.text(configManager.str("message.UploadingTexture"), NamedTextColor.DARK_PURPLE))
         );
 
-        String[] MineSkinApi = MineSkinApi(
+        Result<MineSkinData> mineSkinData = MineSkinApi(
                 configManager.str("mineskinapi"),
                 picName,
                 dataFolder + File.separator + "Cache" + File.separator + picName,
                 isSlim
         );
-        if (MineSkinApi == null) {
-            player.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
-                    .append(Component.text(configManager.str("message.UploadTextureError"), NamedTextColor.RED))
-            );
-            return false;
-        }
-        if (!(MineSkinApi[0].equals("OK"))) {
+        if (!mineSkinData.isSuccess()) {
             player.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
                     .append(Component.text(configManager.str("message.UploadTextureError"), NamedTextColor.RED))
             );
             return false;
         }
 
-        String value = MineSkinApi[1];
-        String signature = MineSkinApi[2];
+        String value = mineSkinData.getData().getValue();
+        String signature = mineSkinData.getData().getSignature();
 
         player.sendMessage(Component.text("[UBS] ", NamedTextColor.AQUA)
                 .append(Component.text(configManager.str("message.UploadTextureSuccess"), NamedTextColor.BLUE)));

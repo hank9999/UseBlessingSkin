@@ -1,6 +1,10 @@
 package com.github.hank9999.useblessingskin.bukkit.libs;
 
 import com.github.hank9999.useblessingskin.bukkit.UseBlessingSkin;
+import com.github.hank9999.useblessingskin.shared.ErrorCode;
+import com.github.hank9999.useblessingskin.shared.model.MineSkinData;
+import com.github.hank9999.useblessingskin.shared.model.Result;
+import com.github.hank9999.useblessingskin.shared.model.SkinCSLData;
 import net.skinsrestorer.api.property.InputDataResult;
 import net.skinsrestorer.api.property.SkinProperty;
 import org.bukkit.ChatColor;
@@ -20,64 +24,56 @@ public class SkinSetter {
     public static boolean setSkin(String username, Player player) {
         try {
 
-            String[] textureIdData = getTextureId(
+            Result<SkinCSLData> textureIdData = getTextureId(
                     GetConfig.str("csl").replaceAll("%name%", URLEncoder.encode(username, "UTF-8"))
             );
 
-            String isSlim;
-            String textureId;
-
-            if (textureIdData == null) {
-                isSlim = "false";
-                textureId = null;
-            } else {
-                isSlim = textureIdData[0];
-                textureId = textureIdData[1];
-            }
-
-            if (textureId == null) {
-                player.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.RequestError"));
-                return false;
-            } else if (textureId.equals("Role does not exist")) {
-                player.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.RoleNotExist"));
-                return false;
-            } else if (textureId.equals("Role response is empty")) {
-                player.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.RoleResponseEmpty"));
-                return false;
-            } else if (textureId.equals("Role does not have skin")) {
-                player.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.RoleSkinNotExist"));
-                if (GetConfig.bool("cdn")) {
-                    player.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.IfCdnMakeRoleSkinNotExist"));
+            if (!textureIdData.isSuccess()) {
+                if (textureIdData.getErrorCode() == ErrorCode.UNKNOWN_ERROR) {
+                    player.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.RequestError"));
+                    return false;
+                } else if (textureIdData.getErrorCode() == ErrorCode.ROLE_NOT_EXIST) {
+                    player.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.RoleNotExist"));
+                    return false;
+                } else if (textureIdData.getErrorCode() == ErrorCode.ROLE_RESPONSE_EMPTY) {
+                    player.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.RoleResponseEmpty"));
+                    return false;
+                } else if (textureIdData.getErrorCode() == ErrorCode.ROLE_SKIN_NOT_EXIST) {
+                    player.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.RoleSkinNotExist"));
+                    if (GetConfig.bool("cdn")) {
+                        player.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.IfCdnMakeRoleSkinNotExist"));
+                    }
+                    return false;
+                } else {
+                    player.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.UnknownError"));
+                    return false;
                 }
-                return false;
             }
+
+            String textureId = textureIdData.getData().getTextureId();
+            boolean isSlim = textureIdData.getData().isSlim();
 
             player.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + GetConfig.str("message.TextureIdGetSuccess") + " " + textureId);
 
             String picName;
+            boolean needDownload;
 
             if (GetConfig.bool("cache")) {
                 picName = textureId + ".png";
-                if (!checkCache(basePath + File.separator + "Cache" + File.separator + picName)) {
-                    if (!savePic(
-                            GetConfig.str("texture").replaceAll("%textureId%", textureId),
-                            basePath + File.separator + "Cache" + File.separator,
-                            picName)
-                    ) {
-                        player.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.SaveTextureError"));
-                        return false;
-                    }
-
-                    player.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + GetConfig.str("message.SaveTextureSuccess"));
-                }
-
+                needDownload = !checkCache(basePath + File.separator + "Cache" + File.separator + picName);
             } else {
                 picName = UUID.randomUUID() + ".png";
-                if (!savePic(
+                needDownload = true;
+            }
+
+            if (needDownload) {
+                Result<Boolean> savePicResult = savePic(
                         GetConfig.str("texture").replaceAll("%textureId%", textureId),
                         basePath + File.separator + "Cache" + File.separator,
-                        picName)
-                ) {
+                        picName
+                );
+                boolean savePicSuccess = savePicResult.isSuccess() && savePicResult.getData();
+                if (!savePicSuccess) {
                     player.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.SaveTextureError"));
                     return false;
                 }
@@ -87,24 +83,20 @@ public class SkinSetter {
 
             player.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.DARK_PURPLE + GetConfig.str("message.UploadingTexture"));
 
-            String[] MineSkinApi = MineSkinApi(
+            Result<MineSkinData> mineSkinData = MineSkinApi(
                     GetConfig.str("mineskinapi"),
                     picName,
                     basePath + File.separator + "Cache" + File.separator + picName,
                     isSlim
             );
 
-            if (MineSkinApi == null) {
-                player.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.UploadTextureError"));
-                return false;
-            }
-            if (!(MineSkinApi[0].equals("OK"))) {
+            if (!mineSkinData.isSuccess()) {
                 player.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.RED + GetConfig.str("message.UploadTextureError"));
                 return false;
             }
 
-            String value = MineSkinApi[1];
-            String signature = MineSkinApi[2];
+            String value = mineSkinData.getData().getValue();
+            String signature = mineSkinData.getData().getSignature();
 
             player.sendMessage(ChatColor.AQUA + "[UBS] " + ChatColor.BLUE + GetConfig.str("message.UploadTextureSuccess"));
 
