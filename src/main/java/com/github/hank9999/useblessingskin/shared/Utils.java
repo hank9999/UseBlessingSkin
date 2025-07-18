@@ -1,61 +1,64 @@
 package com.github.hank9999.useblessingskin.shared;
 
+import com.github.hank9999.useblessingskin.shared.model.MineSkinData;
+import com.github.hank9999.useblessingskin.shared.model.Result;
+import com.github.hank9999.useblessingskin.shared.model.SkinCSLData;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static com.github.hank9999.useblessingskin.shared.Response.*;
+import static com.github.hank9999.useblessingskin.shared.service.SkinParser.*;
 import static com.github.hank9999.useblessingskin.shared.HttpMethods.*;
 
 final public class Utils {
-    public static String[] getTextureId(String url) {
+    public static Result<SkinCSLData> getTextureId(String url) {
         try {
             String profile = getString(url);
             if (profile == null) {
-                return new String[] {"false", "Role does not exist"};
+                return Result.failure(ErrorCode.ROLE_NOT_EXIST);
             } else if (profile.isEmpty() || profile.equals("{}")) {
-                return new String[] {"false", "Role response is empty"};
+                return Result.failure(ErrorCode.ROLE_RESPONSE_EMPTY);
             }
-            String[] TextureIdParseData = TextureIdParser(profile);
-            String isSlim = TextureIdParseData[0];
-            String textureId = TextureIdParseData[1];
-            if (textureId == null) {
-                return new String[] {"false", "Role does not have skin"};
+            SkinCSLData skinData = parseTextureData(profile);
+            if (skinData.getTextureId() == null) {
+                return Result.failure(ErrorCode.ROLE_SKIN_NOT_EXIST);
             }
-            return new String[] {isSlim, textureId};
+            return Result.success(skinData);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return Result.failure(ErrorCode.UNKNOWN_ERROR);
         }
     }
 
-    public static boolean savePic(String urlHttp, String path, String picName) {
+    public static Result<Boolean> savePic(String urlHttp, String path, String picName) {
         try {
-            return getPicture(urlHttp, path, picName);
+            boolean result = getPicture(urlHttp, path, picName);
+            return result ? Result.success(true) : Result.failure(ErrorCode.SAVE_TEXTURE_ERROR);
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return Result.failure(ErrorCode.SAVE_TEXTURE_ERROR);
         }
     }
 
-    public static String[] MineSkinApi(String urlHttp, String picName, String picPath, String isSlim) {
+    public static Result<MineSkinData> MineSkinApi(String urlHttp, String picName, String picPath, boolean isSlim) {
         try {
-            if (isSlim.equalsIgnoreCase("true")) {
+            if (isSlim) {
                 urlHttp += "?model=slim";
             }
             String apiResponse = postPic(urlHttp, picName, picPath);
-            String[] textureData = MineSkinApiParser(apiResponse);
-            if (textureData.length == 0) {
-                return new String[] {"NoResult"};
-            } else if ((textureData[0] == null) || (textureData[1] == null)) {
-                return new String[] {"SomeResultMissing"};
+            if (apiResponse.isEmpty()) {
+                return Result.failure(ErrorCode.NO_RESULT);
             }
-            return new String[] {"OK", textureData[0], textureData[1]};
-
+            MineSkinData mineSkinData = parseMineSkinData(apiResponse);
+            if (mineSkinData.getSignature() == null || mineSkinData.getValue() == null) {
+                return Result.failure(ErrorCode.NO_RESULT);
+            }
+            return Result.success(mineSkinData);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return Result.failure(ErrorCode.UPLOAD_TEXTURE_ERROR);
         }
     }
 
