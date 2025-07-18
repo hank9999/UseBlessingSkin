@@ -6,6 +6,7 @@ import okhttp3.Response;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,7 +14,7 @@ import java.nio.file.Paths;
 final public class HttpMethods {
     private static final OkHttpClient client = new OkHttpClient();
 
-    public static ResponseBody get(String url) throws Exception {
+    public static byte[] get(String url) throws Exception {
         Request request = new Request.Builder()
                 .url(url)
                 .header("User-Agent", "UseBlessingSkinPlugin/1.0")
@@ -28,13 +29,19 @@ final public class HttpMethods {
                 throw new IOException("HTTP error code: " + response.code() + " | " + response.message());
             }
 
-            return response.body();
+            ResponseBody body = response.body();
+
+            if (body == null) {
+                return null;
+            }
+
+            return body.bytes();
         }
     }
 
     public static String getString(String url) throws Exception {
-        ResponseBody body = get(url);
-        return body != null ? body.string() : null;
+        byte[] body = get(url);
+        return body != null ? new String(body, StandardCharsets.UTF_8) : null;
     }
 
     public static boolean getPicture(String urlHttp, String path, String picName) throws Exception {
@@ -47,12 +54,12 @@ final public class HttpMethods {
         File picFile = new File(path, picName);
 
         // 读取
-        ResponseBody body = get(urlHttp);
+        byte[] body = get(urlHttp);
         if (body == null) {
             return false;
         }
 
-        try (InputStream inputStream = body.byteStream()) {
+        try (InputStream inputStream = new ByteArrayInputStream(body)) {
             BufferedImage img = ImageIO.read(inputStream);
             Boolean imgValid = Utils.checkImgValid(img);
 
