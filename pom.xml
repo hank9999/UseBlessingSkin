@@ -109,7 +109,7 @@
         <dependency>
             <groupId>net.skinsrestorer</groupId>
             <artifactId>skinsrestorer-api</artifactId>
-            <version>15.7.7</version>
+            <version>15.4.2</version>
             <scope>provided</scope>
         </dependency>
 
